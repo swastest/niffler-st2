@@ -7,17 +7,21 @@ import static com.codeborne.selenide.Selenide.$$;
 import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
-import niffler.jupiter.GenerateSpend;
-import niffler.jupiter.GenerateSpendExtension;
+import niffler.annotation.GenerateCategory;
+import niffler.annotation.GenerateSpend;
+import niffler.extensions.GenerateCategoryExtension;
+import niffler.extensions.GenerateSpendExtension;
 import niffler.model.CurrencyValues;
 import niffler.model.SpendJson;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-@Disabled
-@ExtendWith(GenerateSpendExtension.class)
+//@Disabled
+@ExtendWith({
+        GenerateCategoryExtension.class,
+        GenerateSpendExtension.class
+})
 public class SpendsWebTest {
 
     static {
@@ -28,31 +32,35 @@ public class SpendsWebTest {
     void doLogin() {
         Selenide.open("http://127.0.0.1:3000/main");
         $("a[href*='redirect']").click();
-        $("input[name='username']").setValue("dima");
-        $("input[name='password']").setValue("12345");
+        $("input[name='username']").setValue("kzk2");
+        $("input[name='password']").setValue("kzk2");
         $("button[type='submit']").click();
     }
 
+    @GenerateCategory(
+            category = "tst",
+            username = "kzk2"
+    )
     @GenerateSpend(
-        username = "dima",
-        description = "QA GURU ADVANCED VOL 2",
-        currency = CurrencyValues.RUB,
-        amount = 52000.00,
-        category = "Обучение"
+            username = "kzk2",
+            description = "QA GURU ADVANCED VOL 2",
+            currency = CurrencyValues.RUB,
+            amount = 52000.00,
+            category = "tst"
     )
     @Test
     void spendShouldBeDeletedByActionInTable(SpendJson spend) {
         $(".spendings-table tbody").$$("tr")
-            .find(text(spend.getDescription()))
-            .$$("td").first()
-            .scrollTo()
-            .click();
+                .find(text(spend.getDescription()))
+                .$$("td").first()
+                .scrollTo()
+                .click();
 
         $$(".button_type_small").find(text("Delete selected"))
-            .click();
+                .click();
 
         $(".spendings-table tbody")
-            .$$("tr")
-            .shouldHave(CollectionCondition.size(0));
+                .$$("tr")
+                .shouldHave(CollectionCondition.size(0));
     }
 }
