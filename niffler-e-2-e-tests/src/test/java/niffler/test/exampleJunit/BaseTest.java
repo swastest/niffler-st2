@@ -1,0 +1,9 @@
+package niffler.test.exampleJunit;
+
+import niffler.jupiter.extension.exampleJunitExtension.ExampleSuiteExtension;
+import org.junit.jupiter.api.extension.ExtendWith;
+
+@ExtendWith(ExampleSuiteExtension.class)
+public abstract class BaseTest {
+
+}

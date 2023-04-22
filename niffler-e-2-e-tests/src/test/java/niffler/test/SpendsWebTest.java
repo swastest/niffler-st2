@@ -7,10 +7,10 @@ import static com.codeborne.selenide.Selenide.$$;
 import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
-import niffler.annotation.GenerateCategory;
-import niffler.annotation.GenerateSpend;
-import niffler.extensions.GenerateCategoryExtension;
-import niffler.extensions.GenerateSpendExtension;
+import niffler.jupiter.annotation.GenerateCategory;
+import niffler.jupiter.annotation.GenerateSpend;
+import niffler.jupiter.extension.GenerateCategoryExtension;
+import niffler.jupiter.extension.GenerateSpendExtension;
 import niffler.model.CurrencyValues;
 import niffler.model.SpendJson;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,7 +22,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
         GenerateCategoryExtension.class,
         GenerateSpendExtension.class
 })
-public class SpendsWebTest {
+public class SpendsWebTest extends BaseWebTest {
 
     static {
         Configuration.browserSize = "1920x1080";
