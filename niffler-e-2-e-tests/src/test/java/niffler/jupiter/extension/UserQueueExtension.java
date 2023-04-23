@@ -6,11 +6,10 @@ import niffler.model.UserJson;
 import org.junit.jupiter.api.extension.*;
 
 import java.lang.reflect.Parameter;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Queue;
+import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
+
+import static niffler.jupiter.annotation.User.UserType.*;
 
 public class UserQueueExtension implements
         BeforeEachCallback, // не является частью времени выполнения теста
@@ -34,6 +33,7 @@ public class UserQueueExtension implements
                 userJson("user1", "user1")));
     }
 
+    /*
     @Override
     public void beforeEach(ExtensionContext context) throws Exception {
         final String testId = getTestId(context);
@@ -54,6 +54,34 @@ public class UserQueueExtension implements
             }
         }
     }
+     */
+    @Override
+    public void beforeEach(ExtensionContext context) throws Exception {
+        final String testId = getTestId(context);
+        List<Parameter> testParameters = Arrays.asList(context.getRequiredTestMethod().getParameters());
+        List<User.UserType> desiredUserType = new ArrayList<>();
+        for (Parameter parameter : testParameters) {
+            if (parameter.isAnnotationPresent(User.class)) {
+                desiredUserType.add(parameter.getAnnotation(User.class).userType());
+            }
+        }
+
+        Map<User.UserType, UserJson> mapUsers = new HashMap<>();
+        for (int i = 0; i < desiredUserType.size(); i++) {
+            UserJson user = null;
+            while (user == null) {
+                switch (desiredUserType.get(i)) {
+                    case WITH_FRIEND -> user = USERS_WITH_FRIENDS_QUEUE.poll(); // достать из очереди
+                    case INVITATION_SENT -> user = USERS_INVITATION_SENT_QUEUE.poll();
+                    case INVITATION_RECEIVED -> user = USERS_INVITATION_RECEIVED_QUEUE.poll();
+                    default -> throw new IllegalArgumentException("Unknown user type: " + desiredUserType.get(i));
+                }
+            }
+            mapUsers.put(desiredUserType.get(i), user);
+        }
+        context.getStore(USER_EXTENSION_NAMESPACE).put(testId, mapUsers);
+    }
+
 
     @SuppressWarnings("uncheked")
     @Override
@@ -75,12 +103,20 @@ public class UserQueueExtension implements
                 parameterContext.getParameter().getType().isAssignableFrom(UserJson.class);
     }
 
+    /*
     @Override
     public UserJson resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
         final String testId = getTestId(extensionContext);
         Map<User.UserType, UserJson> user = (Map<User.UserType, UserJson>)
                 extensionContext.getStore(USER_EXTENSION_NAMESPACE).get(testId);
         return user.values().iterator().next();
+    }
+     */
+    @Override
+    public UserJson resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
+        final String testId = getTestId(extensionContext);
+        return (UserJson) extensionContext.getStore(USER_EXTENSION_NAMESPACE).get(testId, Map.class)
+                .get(parameterContext.getParameter().getDeclaredAnnotation(User.class).userType());
     }
 
     private String getTestId(ExtensionContext extensionContext) {
