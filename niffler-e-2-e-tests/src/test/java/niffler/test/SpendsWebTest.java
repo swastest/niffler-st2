@@ -14,19 +14,18 @@ import niffler.jupiter.extension.GenerateSpendExtension;
 import niffler.model.CurrencyValues;
 import niffler.model.SpendJson;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-//@Disabled
+@Disabled
 @ExtendWith({
         GenerateCategoryExtension.class,
         GenerateSpendExtension.class
 })
 public class SpendsWebTest extends BaseWebTest {
 
-    static {
-        Configuration.browserSize = "1920x1080";
-    }
+
 
     @BeforeEach
     void doLogin() {

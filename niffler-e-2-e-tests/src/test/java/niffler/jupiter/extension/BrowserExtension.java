@@ -21,7 +21,7 @@ public class BrowserExtension implements TestExecutionExceptionHandler, AfterEac
                             .getScreenshotAs(OutputType.BYTES))
             );
         }
-        throw throwable;
+        throw throwable; // если не написать - будут вечно зеленые тесты!
     }
 
     @Override

@@ -1,9 +1,11 @@
 package niffler.test;
 
+import com.codeborne.selenide.Configuration;
 import niffler.jupiter.annotation.WebTest;
-import niffler.jupiter.extension.BrowserExtension;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 @WebTest
 public class BaseWebTest {
+    static {
+        Configuration.browserSize = "1920x1080";
+    }
 }
