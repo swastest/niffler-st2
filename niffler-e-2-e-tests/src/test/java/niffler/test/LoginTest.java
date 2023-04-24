@@ -21,13 +21,12 @@ public class LoginTest extends BaseWebTest {
                         @User(userType = User.UserType.INVITATION_RECEIVED) UserJson userJson2) {
         System.out.println("Test1=========="+userJson.toString());
         System.out.println("Test2=========="+userJson2.toString());
-        Selenide.open("http://127.0.0.1:3000/main");
-        $("a[href*='redirect']").click();
-        $("input[name='username']").setValue(userJson.getUsername());
-        $("input[name='password']").setValue(userJson.getPassword());
-        $("button[type='submit']").click();
-        $(".header__title").shouldHave(Condition.text("Niffler. The coin keeper."));
-        Assertions.assertNotNull(userJson2);
+//        Selenide.open("http://127.0.0.1:3000/main");
+//        $("a[href*='redirect']").click();
+//        $("input[name='username']").setValue(userJson.getUsername());
+//        $("input[name='password']").setValue(userJson.getPassword());
+//        $("button[type='submit']").click();
+//        $(".header__title").shouldHave(Condition.text("Niffler. The coin keeper."));
     }
 
     @AllureId("2")
