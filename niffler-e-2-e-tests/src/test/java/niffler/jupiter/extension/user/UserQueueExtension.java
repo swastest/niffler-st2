@@ -1,4 +1,4 @@
-package niffler.jupiter.extension;
+package niffler.jupiter.extension.user;
 
 import io.qameta.allure.AllureId;
 import niffler.jupiter.annotation.User;
@@ -7,7 +7,6 @@ import org.junit.jupiter.api.extension.*;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.stream.Collectors;
 
 public class UserQueueExtension implements
         BeforeEachCallback, // не является частью времени выполнения теста
@@ -31,36 +30,14 @@ public class UserQueueExtension implements
                 userJson("user1", "user1")));
     }
 
-    /*
-    @Override
-    public void beforeEach(ExtensionContext context) throws Exception {
-        final String testId = getTestId(context);
-        Parameter[] testParameters = context.getRequiredTestMethod().getParameters();
-        for (Parameter parameter : testParameters) { // пройтись по параметрам и определить аннотацию User+userType
-            User desiredUser = parameter.getAnnotation(User.class);
-            if (desiredUser != null) {
-                User.UserType userType = desiredUser.userType();
-                UserJson user = null;
-                while (user == null) {
-                    switch (userType) {
-                        case WITH_FRIEND -> user = USERS_WITH_FRIENDS_QUEUE.poll(); // достать из очереди
-                        case INVITATION_SENT -> user = USERS_INVITATION_SENT_QUEUE.poll();
-                        case INVITATION_RECEIVED -> user = USERS_INVITATION_RECEIVED_QUEUE.poll();
-                    }
-                }
-                context.getStore(USER_EXTENSION_NAMESPACE).put(testId, Map.of(userType, user));
-            }
-        }
-    }
-     */
     @Override
     public void beforeEach(ExtensionContext context) throws Exception {
         final String testId = getTestId(context);
 
         List<User.UserType> desiredUserType = Arrays.stream(context.getRequiredTestMethod().getParameters())
                 .filter(parameter -> parameter.isAnnotationPresent(User.class))
-                .filter(objType -> objType.getType().isAssignableFrom(UserJson.class))
-                .map(value -> value.getAnnotation(User.class).userType()).collect(Collectors.toList());
+                .filter(parameter -> parameter.getType().isAssignableFrom(UserJson.class))
+                .map(parameter -> parameter.getAnnotation(User.class).userType()).toList();
 
         Map<User.UserType, List<UserJson>> mapUsers = new HashMap<>();
         desiredUserType.forEach(type -> mapUsers.put(type, new ArrayList<>()));
@@ -102,15 +79,6 @@ public class UserQueueExtension implements
                 parameterContext.getParameter().getType().isAssignableFrom(UserJson.class);
     }
 
-    /*
-    @Override
-    public UserJson resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
-        final String testId = getTestId(extensionContext);
-        Map<User.UserType, UserJson> user = (Map<User.UserType, UserJson>)
-                extensionContext.getStore(USER_EXTENSION_NAMESPACE).get(testId);
-        return user.values().iterator().next();
-    }
-     */
     @Override
     public UserJson resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
         final String testId = getTestId(extensionContext);

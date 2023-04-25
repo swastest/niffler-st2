@@ -6,10 +6,7 @@ import com.codeborne.selenide.Selenide;
 import io.qameta.allure.AllureId;
 import niffler.jupiter.annotation.User;
 import niffler.model.UserJson;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 
 import static com.codeborne.selenide.Selenide.$;
 
@@ -18,15 +15,11 @@ public class LoginTest extends BaseWebTest {
     @AllureId("1")
     @Test
     void positiveLogin1(@User(userType = User.UserType.WITH_FRIEND) UserJson userJson,
-                        @User(userType = User.UserType.INVITATION_RECEIVED) UserJson userJson2) {
+                        @User(userType = User.UserType.INVITATION_RECEIVED) UserJson userJson2,
+                        @User(userType = User.UserType.INVITATION_SENT) UserJson userJson3) {
         System.out.println("Test1=========="+userJson.toString());
         System.out.println("Test2=========="+userJson2.toString());
-//        Selenide.open("http://127.0.0.1:3000/main");
-//        $("a[href*='redirect']").click();
-//        $("input[name='username']").setValue(userJson.getUsername());
-//        $("input[name='password']").setValue(userJson.getPassword());
-//        $("button[type='submit']").click();
-//        $(".header__title").shouldHave(Condition.text("Niffler. The coin keeper."));
+        System.out.println("Test3=========="+userJson3.toString());
     }
 
     @AllureId("2")

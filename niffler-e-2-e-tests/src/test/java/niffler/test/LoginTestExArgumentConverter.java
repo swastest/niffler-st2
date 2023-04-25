@@ -12,7 +12,7 @@ import java.io.IOException;
 
 import static com.codeborne.selenide.Selenide.$;
 
-public class LoginTestEx extends BaseWebTest {
+public class LoginTestExArgumentConverter extends BaseWebTest {
     @ValueSource(strings = {
             "testData/userKzk.json",
             "testData/userUser1.json"})
@@ -29,9 +29,9 @@ public class LoginTestEx extends BaseWebTest {
 
 
 
-    /// заменили ArgumentConverter функционалом
+    /// заменили ArgumentConverter (пример выше)
     private static ObjectMapper om = new ObjectMapper();
-    private ClassLoader cl = LoginTestEx.class.getClassLoader();
+    private ClassLoader cl = LoginTestExArgumentConverter.class.getClassLoader();
     @ValueSource(strings = {
             "testData/userKzk.json",
             "testData/userUser1.json"})
