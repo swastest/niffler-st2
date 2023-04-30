@@ -17,7 +17,15 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-//@Disabled
+/*
+Расширения можно подключать и на уровне аннотаций.
+Тогда, каждый раз вызывая данную аннотацию, будет вызван код из соответствующего extension(а).
+Делается это вот так
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+@ExtendWith(GenerateCategoryExtension.class)
+public @interface GenerateCategory {
+ */
 @ExtendWith({
         GenerateCategoryExtension.class,
         GenerateSpendExtension.class
