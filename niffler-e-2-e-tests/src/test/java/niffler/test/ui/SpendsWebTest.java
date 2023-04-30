@@ -1,11 +1,10 @@
-package niffler.test;
+package niffler.test.ui;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 
 import com.codeborne.selenide.CollectionCondition;
-import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
 import niffler.jupiter.annotation.GenerateCategory;
 import niffler.jupiter.annotation.GenerateSpend;

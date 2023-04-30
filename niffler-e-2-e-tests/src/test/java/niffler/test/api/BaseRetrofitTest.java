@@ -1,4 +1,4 @@
-package niffler.test.apiTest;
+package niffler.test.api;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -8,7 +8,7 @@ public class BaseRetrofitTest {
     private static final OkHttpClient httpClient = new OkHttpClient.Builder()
             .build();
 
-    static Retrofit getRetrofit(String url) {
+    protected Retrofit getRetrofit(String url) {
         return new Retrofit.Builder()
                 .client(httpClient)
                 .baseUrl(url)

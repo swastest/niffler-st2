@@ -1,4 +1,4 @@
-package niffler.test;
+package niffler.test.ui;
 
 import com.codeborne.selenide.Configuration;
 import niffler.jupiter.annotation.WebTest;

@@ -1,4 +1,4 @@
-package niffler.test;
+package niffler.test.ui;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;

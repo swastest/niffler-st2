@@ -1,4 +1,4 @@
-package niffler.test.apiTest;
+package niffler.test.api;
 
 import niffler.api.UserService;
 import niffler.jupiter.annotation.ClassPathUser;
@@ -10,7 +10,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.io.IOException;
 
 public class RetrofitUpdateUserTest extends BaseRetrofitTest {
-   private static UserService userService = getRetrofit("http://127.0.0.1:8089").create(UserService.class);
+   private final UserService userService = getRetrofit("http://127.0.0.1:8089").create(UserService.class);
     @ValueSource(strings = {
             "testData/userKzk.json",
             "testData/userUser1.json"
