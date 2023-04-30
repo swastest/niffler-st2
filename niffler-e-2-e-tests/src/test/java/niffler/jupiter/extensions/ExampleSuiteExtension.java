@@ -1,4 +1,4 @@
-package niffler.extensions;
+package niffler.jupiter.extensions;
 
 public class ExampleSuiteExtension implements SuiteExtension {
 

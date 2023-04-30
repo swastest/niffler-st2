@@ -1,8 +1,8 @@
-package niffler.extensions;
+package niffler.jupiter.extensions;
 
 import dbHelper.DBManagerImpl;
 import dbHelper.IDBManager;
-import niffler.annotation.GenerateCategory;
+import niffler.jupiter.annotation.GenerateCategory;
 import niffler.api.CategoryService;
 import niffler.model.CategoryJson;
 import okhttp3.OkHttpClient;
@@ -39,7 +39,8 @@ public class GenerateCategoryExtension implements ParameterResolver, BeforeEachC
 
             CategoryJson category = categoryService.addCategory(categoryJson).execute().body();
 
-            context.getStore(CATEGORY_NAMESPACE).put("category", category);
+            context.getStore(CATEGORY_NAMESPACE).put(getUidTest(context), category);
+            // используем ключ - уникальный идентификатор теста, для корректной работы в многопоточности
         }
     }
 
@@ -55,9 +56,13 @@ public class GenerateCategoryExtension implements ParameterResolver, BeforeEachC
 
     @Override
     public void afterTestExecution(ExtensionContext context) throws Exception {
-        CategoryJson categoryJson = context.getStore(CATEGORY_NAMESPACE).get("category", CategoryJson.class);
+        CategoryJson categoryJson = context.getStore(CATEGORY_NAMESPACE).get(getUidTest(context), CategoryJson.class);
         if (categoryJson != null) {
             manager.deleteCategory(categoryJson.getCategory());
         }
+    }
+
+    private String getUidTest(ExtensionContext context){
+        return context.getUniqueId();
     }
 }

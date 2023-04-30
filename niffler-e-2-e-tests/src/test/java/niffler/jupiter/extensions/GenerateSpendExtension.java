@@ -1,8 +1,8 @@
-package niffler.extensions;
+package niffler.jupiter.extensions;
 
 import java.util.Date;
 
-import niffler.annotation.GenerateSpend;
+import niffler.jupiter.annotation.GenerateSpend;
 import niffler.api.SpendService;
 import niffler.model.SpendJson;
 import okhttp3.OkHttpClient;
