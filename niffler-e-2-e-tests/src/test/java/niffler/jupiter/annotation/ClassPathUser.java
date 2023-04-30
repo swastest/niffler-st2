@@ -1,6 +1,6 @@
 package niffler.jupiter.annotation;
 
-import niffler.jupiter.extension.ClassPathUserConverter;
+import niffler.jupiter.extension.user.ClassPathUserConverter;
 import org.junit.jupiter.params.converter.ConvertWith;
 
 import java.lang.annotation.ElementType;

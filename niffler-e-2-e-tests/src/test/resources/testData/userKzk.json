@@ -1,4 +1,8 @@
 {
   "username" : "kzk2",
-  "password" : "kzk2"
+  "password" : "kzk2",
+  "firstname": "hello",
+  "surname": "world",
+  "currency": "USD",
+  "photo": ""
 }

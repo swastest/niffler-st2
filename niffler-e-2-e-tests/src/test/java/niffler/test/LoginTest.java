@@ -55,6 +55,6 @@ public class LoginTest extends BaseWebTest {
         $("input[name='password']").setValue(userJson.getPassword());
         $("button[type='submit']").click();
         $(".header__title").shouldHave(Condition.text("Niffler. The coin keeper."));
-
     }
+
 }
