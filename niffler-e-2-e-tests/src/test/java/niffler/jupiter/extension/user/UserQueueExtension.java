@@ -7,7 +7,6 @@ import org.junit.jupiter.api.extension.*;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class UserQueueExtension implements
         BeforeEachCallback, // не является частью времени выполнения теста
@@ -31,6 +30,33 @@ public class UserQueueExtension implements
                 userJson("user1", "user1")));
     }
 
+//    @Override
+//    public void beforeEach(ExtensionContext context) throws Exception {
+//        final String testId = getTestId(context);
+//
+//        List<User.UserType> desiredUserType = Arrays.stream(context.getRequiredTestMethod().getParameters())
+//                .filter(parameter -> parameter.isAnnotationPresent(User.class))
+//                .filter(parameter -> parameter.getType().isAssignableFrom(UserJson.class))
+//                .map(parameter -> parameter.getAnnotation(User.class).userType()).toList();
+//
+//        Map<User.UserType, List<UserJson>> mapUsers = new HashMap<>();
+//        desiredUserType.forEach(type -> mapUsers.put(type, new ArrayList<>()));
+//
+//        for (User.UserType userType : desiredUserType) {
+//            UserJson user = null;
+//            while (user == null) {
+//                switch (userType) {
+//                    case WITH_FRIEND -> user = USERS_WITH_FRIENDS_QUEUE.poll(); // достать из очереди
+//                    case INVITATION_SENT -> user = USERS_INVITATION_SENT_QUEUE.poll();
+//                    case INVITATION_RECEIVED -> user = USERS_INVITATION_RECEIVED_QUEUE.poll();
+//                    default -> throw new IllegalArgumentException("Unknown user type: " + userType);
+//                }
+//            }
+//            mapUsers.get(userType).add(user);
+//        }
+//        context.getStore(USER_EXTENSION_NAMESPACE).put(testId, mapUsers);
+//    }
+
     @Override
     public void beforeEach(ExtensionContext context) throws Exception {
         final String testId = getTestId(context);
@@ -40,8 +66,7 @@ public class UserQueueExtension implements
                 .filter(parameter -> parameter.getType().isAssignableFrom(UserJson.class))
                 .map(parameter -> parameter.getAnnotation(User.class).userType()).toList();
 
-        Map<User.UserType, List<UserJson>> mapUsers = new HashMap<>();
-        desiredUserType.forEach(type -> mapUsers.put(type, new ArrayList<>()));
+        List<Map<User.UserType, UserJson>> usersList = new ArrayList<>();
 
         for (User.UserType userType : desiredUserType) {
             UserJson user = null;
@@ -53,23 +78,37 @@ public class UserQueueExtension implements
                     default -> throw new IllegalArgumentException("Unknown user type: " + userType);
                 }
             }
-            mapUsers.get(userType).add(user);
+            usersList.add(Map.of(userType, user));
         }
-        context.getStore(USER_EXTENSION_NAMESPACE).put(testId, mapUsers);
+        context.getStore(USER_EXTENSION_NAMESPACE).put(testId, usersList);
     }
 
 
+    //    @SuppressWarnings("uncheked")
+//    @Override
+//    public void afterTestExecution(ExtensionContext context) throws Exception {
+//        final String testId = getTestId(context);
+//        Map<User.UserType, List<UserJson>> freeUser =
+//                context.getStore(USER_EXTENSION_NAMESPACE).get(testId, Map.class);
+//        for (User.UserType userType : freeUser.keySet()) {
+//            switch (userType) {
+//                case WITH_FRIEND -> USERS_WITH_FRIENDS_QUEUE.addAll(freeUser.get(userType));
+//                case INVITATION_SENT -> USERS_INVITATION_SENT_QUEUE.addAll(freeUser.get(userType));
+//                case INVITATION_RECEIVED -> USERS_INVITATION_RECEIVED_QUEUE.addAll(freeUser.get(userType));
+//            }
+//        }
+//    }
     @SuppressWarnings("uncheked")
     @Override
     public void afterTestExecution(ExtensionContext context) throws Exception {
         final String testId = getTestId(context);
-        Map<User.UserType, List<UserJson>> freeUser =
-                context.getStore(USER_EXTENSION_NAMESPACE).get(testId, Map.class);
-        for (User.UserType userType : freeUser.keySet()) {
+        List<Map<User.UserType, UserJson>> freeUsers = context.getStore(USER_EXTENSION_NAMESPACE).get(testId, List.class);
+        for (Map<User.UserType, UserJson> freeUser : freeUsers) {
+            User.UserType userType = freeUser.keySet().iterator().next();
             switch (userType) {
-                case WITH_FRIEND -> USERS_WITH_FRIENDS_QUEUE.addAll(freeUser.get(userType));
-                case INVITATION_SENT -> USERS_INVITATION_SENT_QUEUE.addAll(freeUser.get(userType));
-                case INVITATION_RECEIVED -> USERS_INVITATION_RECEIVED_QUEUE.addAll(freeUser.get(userType));
+                case WITH_FRIEND -> USERS_WITH_FRIENDS_QUEUE.add(freeUser.get(userType));
+                case INVITATION_SENT -> USERS_INVITATION_SENT_QUEUE.add(freeUser.get(userType));
+                case INVITATION_RECEIVED -> USERS_INVITATION_RECEIVED_QUEUE.add(freeUser.get(userType));
             }
         }
     }
@@ -79,30 +118,47 @@ public class UserQueueExtension implements
         return parameterContext.getParameter().isAnnotationPresent(User.class) &&
                 parameterContext.getParameter().getType().isAssignableFrom(UserJson.class);
     }
-    private static <T> AtomicInteger getAtomicInteger(ExtensionContext context, String key) {
-        return (AtomicInteger) context.getStore(USER_EXTENSION_NAMESPACE)
-                .getOrComputeIfAbsent(key, k -> new AtomicInteger(0));
-    }
+
+//    @SuppressWarnings("uncheked")
+//    @Override
+//    public UserJson resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
+//        final String testId = getTestId(extensionContext);
+//        User.UserType userType = parameterContext.getParameter().getDeclaredAnnotation(User.class).userType();
+//        Map<User.UserType, List<UserJson>> mapUsers = extensionContext.getStore(USER_EXTENSION_NAMESPACE)
+//                .get(testId, Map.class);
+//
+//        // такой вариант не подойдет, если в параметре метода будет ожидаться 2 разных юзера с одинаковым типом, так как берется только первый
+////        for (UserJson user : mapUsers.get(userType)) {
+////            return user;
+////        }
+//
+//        List<UserJson> userJsonsList = new ArrayList<>();
+//        for(UserJson userJson: mapUsers.get(userType)) {
+//            userJsonsList.add(userJson);
+//        }
+//        UserJson user = userJsonsList.get(parameterContext.getIndex());
+//        return  user;
+//
+//        //    throw new RuntimeException("No user found " + userType);
+//    }
 
     @SuppressWarnings("uncheked")
     @Override
     public UserJson resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
         final String testId = getTestId(extensionContext);
+
+        List<Map<User.UserType, UserJson>> usersFromStore = extensionContext.getStore(USER_EXTENSION_NAMESPACE).get(testId, List.class);
         User.UserType userType = parameterContext.getParameter().getDeclaredAnnotation(User.class).userType();
-        Map<User.UserType, List<UserJson>> mapUsers = extensionContext.getStore(USER_EXTENSION_NAMESPACE)
-                .get(testId, Map.class);
+
+        List<UserJson> listUsers = new ArrayList<>();
+        for (Map<User.UserType, UserJson> mapUsers : usersFromStore) {
+            listUsers.add(mapUsers.get(userType));
+        }
+
+        UserJson user = listUsers.get(parameterContext.getIndex());
+        return user;
 
 
-//        for (UserJson user : mapUsers.get(userType)) {
-//            return user;
-//        }
-
-        List<UserJson> userList = mapUsers.get(userType);
-        int currentIndex = getAtomicInteger(extensionContext, testId + "_" + userType).getAndIncrement();
-        return userList.get(currentIndex % userList.size());
-
-
-        //    throw new RuntimeException("No user found " + userType);
     }
 
     private String getTestId(ExtensionContext extensionContext) {
