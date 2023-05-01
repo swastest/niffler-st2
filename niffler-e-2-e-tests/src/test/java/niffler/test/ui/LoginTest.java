@@ -15,11 +15,13 @@ public class LoginTest extends BaseWebTest {
     @AllureId("1")
     @Test
     void positiveLogin1(@User(userType = User.UserType.WITH_FRIEND) UserJson userJson,
+                        @User(userType = User.UserType.WITH_FRIEND) UserJson userJson11,
                         @User(userType = User.UserType.INVITATION_RECEIVED) UserJson userJson2,
                         @User(userType = User.UserType.INVITATION_SENT) UserJson userJson3) {
         System.out.println("Test1=========="+userJson.toString());
         System.out.println("Test2=========="+userJson2.toString());
         System.out.println("Test3=========="+userJson3.toString());
+        System.out.println("Test3=========="+userJson11.toString());
     }
 
     @AllureId("2")

@@ -1,7 +1,7 @@
 package niffler.jupiter.extension;
 
-import dbHelper.DBManagerImpl;
-import dbHelper.IDBManager;
+import dbHelper.dao.CategoryDaoImpl;
+import dbHelper.dao.CategoryDao;
 import niffler.jupiter.annotation.GenerateCategory;
 import niffler.api.CategoryService;
 import niffler.model.CategoryJson;
@@ -26,7 +26,7 @@ public class GenerateCategoryExtension implements ParameterResolver, BeforeEachC
 
     private final CategoryService categoryService = retrofit.create(CategoryService.class);
 
-    private final IDBManager manager = new DBManagerImpl();
+    private final CategoryDao manager = new CategoryDaoImpl();
 
     @Override
     public void beforeEach(ExtensionContext context) throws Exception {

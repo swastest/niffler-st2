@@ -7,6 +7,7 @@ import org.junit.jupiter.api.extension.*;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class UserQueueExtension implements
         BeforeEachCallback, // не является частью времени выполнения теста
@@ -78,17 +79,30 @@ public class UserQueueExtension implements
         return parameterContext.getParameter().isAnnotationPresent(User.class) &&
                 parameterContext.getParameter().getType().isAssignableFrom(UserJson.class);
     }
+    private static <T> AtomicInteger getAtomicInteger(ExtensionContext context, String key) {
+        return (AtomicInteger) context.getStore(USER_EXTENSION_NAMESPACE)
+                .getOrComputeIfAbsent(key, k -> new AtomicInteger(0));
+    }
 
+    @SuppressWarnings("uncheked")
     @Override
     public UserJson resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
         final String testId = getTestId(extensionContext);
         User.UserType userType = parameterContext.getParameter().getDeclaredAnnotation(User.class).userType();
         Map<User.UserType, List<UserJson>> mapUsers = extensionContext.getStore(USER_EXTENSION_NAMESPACE)
                 .get(testId, Map.class);
-        for (UserJson user : mapUsers.get(userType)) {
-            return user;
-        }
-        throw new RuntimeException("No user found " + userType);
+
+
+//        for (UserJson user : mapUsers.get(userType)) {
+//            return user;
+//        }
+
+        List<UserJson> userList = mapUsers.get(userType);
+        int currentIndex = getAtomicInteger(extensionContext, testId + "_" + userType).getAndIncrement();
+        return userList.get(currentIndex % userList.size());
+
+
+        //    throw new RuntimeException("No user found " + userType);
     }
 
     private String getTestId(ExtensionContext extensionContext) {

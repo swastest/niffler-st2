@@ -10,7 +10,7 @@ public class UserJson {
     private UUID id;
     @JsonProperty("username")
     private String username;
-    private transient String password;
+    private transient String password; // transient - не передается в апишку данное поле
     @JsonProperty("firstname")
     private String firstname;
     @JsonProperty("surname")

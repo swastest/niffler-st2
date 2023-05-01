@@ -1,8 +1,8 @@
-package dbHelper;
+package dbHelper.dao;
 
 import java.util.Map;
 
-public interface IDBManager {
+public interface CategoryDao {
     void deleteCategory(String categoryName);
 
     Map<String, Object> info();
