@@ -22,4 +22,9 @@ public class UsersDaoImpl implements UsersDao {
     public UserEntity userInfo(String userName) {
         return null;
     }
+
+    @Override
+    public String getUserId(String userName) {
+        return null;
+    }
 }

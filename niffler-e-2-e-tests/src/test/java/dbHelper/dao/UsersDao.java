@@ -7,4 +7,5 @@ public interface UsersDao {
     int updateUser(UserEntity user);
     void deleteUser(UserEntity user);
     UserEntity userInfo(String userName);
+    String getUserId(String userName);
 }
