@@ -30,33 +30,6 @@ public class UserQueueExtension implements
                 userJson("user1", "user1")));
     }
 
-//    @Override
-//    public void beforeEach(ExtensionContext context) throws Exception {
-//        final String testId = getTestId(context);
-//
-//        List<User.UserType> desiredUserType = Arrays.stream(context.getRequiredTestMethod().getParameters())
-//                .filter(parameter -> parameter.isAnnotationPresent(User.class))
-//                .filter(parameter -> parameter.getType().isAssignableFrom(UserJson.class))
-//                .map(parameter -> parameter.getAnnotation(User.class).userType()).toList();
-//
-//        Map<User.UserType, List<UserJson>> mapUsers = new HashMap<>();
-//        desiredUserType.forEach(type -> mapUsers.put(type, new ArrayList<>()));
-//
-//        for (User.UserType userType : desiredUserType) {
-//            UserJson user = null;
-//            while (user == null) {
-//                switch (userType) {
-//                    case WITH_FRIEND -> user = USERS_WITH_FRIENDS_QUEUE.poll(); // достать из очереди
-//                    case INVITATION_SENT -> user = USERS_INVITATION_SENT_QUEUE.poll();
-//                    case INVITATION_RECEIVED -> user = USERS_INVITATION_RECEIVED_QUEUE.poll();
-//                    default -> throw new IllegalArgumentException("Unknown user type: " + userType);
-//                }
-//            }
-//            mapUsers.get(userType).add(user);
-//        }
-//        context.getStore(USER_EXTENSION_NAMESPACE).put(testId, mapUsers);
-//    }
-
     @Override
     public void beforeEach(ExtensionContext context) throws Exception {
         final String testId = getTestId(context);
@@ -83,21 +56,6 @@ public class UserQueueExtension implements
         context.getStore(USER_EXTENSION_NAMESPACE).put(testId, usersList);
     }
 
-
-    //    @SuppressWarnings("uncheked")
-//    @Override
-//    public void afterTestExecution(ExtensionContext context) throws Exception {
-//        final String testId = getTestId(context);
-//        Map<User.UserType, List<UserJson>> freeUser =
-//                context.getStore(USER_EXTENSION_NAMESPACE).get(testId, Map.class);
-//        for (User.UserType userType : freeUser.keySet()) {
-//            switch (userType) {
-//                case WITH_FRIEND -> USERS_WITH_FRIENDS_QUEUE.addAll(freeUser.get(userType));
-//                case INVITATION_SENT -> USERS_INVITATION_SENT_QUEUE.addAll(freeUser.get(userType));
-//                case INVITATION_RECEIVED -> USERS_INVITATION_RECEIVED_QUEUE.addAll(freeUser.get(userType));
-//            }
-//        }
-//    }
     @SuppressWarnings("uncheked")
     @Override
     public void afterTestExecution(ExtensionContext context) throws Exception {
@@ -119,28 +77,6 @@ public class UserQueueExtension implements
                 parameterContext.getParameter().getType().isAssignableFrom(UserJson.class);
     }
 
-//    @SuppressWarnings("uncheked")
-//    @Override
-//    public UserJson resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
-//        final String testId = getTestId(extensionContext);
-//        User.UserType userType = parameterContext.getParameter().getDeclaredAnnotation(User.class).userType();
-//        Map<User.UserType, List<UserJson>> mapUsers = extensionContext.getStore(USER_EXTENSION_NAMESPACE)
-//                .get(testId, Map.class);
-//
-//        // такой вариант не подойдет, если в параметре метода будет ожидаться 2 разных юзера с одинаковым типом, так как берется только первый
-////        for (UserJson user : mapUsers.get(userType)) {
-////            return user;
-////        }
-//
-//        List<UserJson> userJsonsList = new ArrayList<>();
-//        for(UserJson userJson: mapUsers.get(userType)) {
-//            userJsonsList.add(userJson);
-//        }
-//        UserJson user = userJsonsList.get(parameterContext.getIndex());
-//        return  user;
-//
-//        //    throw new RuntimeException("No user found " + userType);
-//    }
 
     @SuppressWarnings("uncheked")
     @Override
