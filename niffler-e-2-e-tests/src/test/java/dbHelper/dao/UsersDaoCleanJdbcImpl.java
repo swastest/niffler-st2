@@ -1,5 +1,7 @@
 package dbHelper.dao;
 
+import dbHelper.entity.authEntity.Authority;
+import dbHelper.entity.authEntity.AuthorityEntity;
 import dbHelper.entity.authEntity.UserEntity;
 import dbHelper.mangerDb.DataSourceProviderPG;
 import dbHelper.mangerDb.ServiceDB;
@@ -8,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -37,11 +40,11 @@ public class UsersDaoCleanJdbcImpl implements UsersDao {
                 executeUpdate = statement.executeUpdate();
 
                 final UUID userId;
-                try(ResultSet resultSet = statement.getGeneratedKeys()) {
-                    if(resultSet.next()){
-                        userId = UUID.fromString(resultSet.getString("id")) ;
+                try (ResultSet resultSet = statement.getGeneratedKeys()) {
+                    if (resultSet.next()) {
+                        userId = UUID.fromString(resultSet.getString("id"));
                         user.setId(userId);
-                    }else {
+                    } else {
                         throw new SQLException("Creating user failed, no ID present");
                     }
                 }
@@ -53,9 +56,13 @@ public class UsersDaoCleanJdbcImpl implements UsersDao {
                     .map(a -> String.format(insertAuthoritiesSql, user.getId(), a)).collect(Collectors.toList());
 
             for (String sql : listAuthorities) {
-               try(Statement statement = connection.createStatement()) {
-                   statement.executeUpdate(sql);
-               }
+                try (Statement statement = connection.createStatement()) {
+                    statement.executeUpdate(sql);
+                } catch (SQLException e) {
+                    connection.rollback();
+                    connection.setAutoCommit(true);
+                    throw new RuntimeException(e);
+                }
             }
             connection.commit();
             connection.setAutoCommit(true);
@@ -100,6 +107,10 @@ public class UsersDaoCleanJdbcImpl implements UsersDao {
 
                 deleteAuthStatement.setString(1, userId);
                 deleteAuthStatement.executeUpdate();
+            } catch (SQLException e) {
+                connection.rollback();
+                connection.setAutoCommit(true);
+                throw new RuntimeException(e);
             }
             connection.commit();
             connection.setAutoCommit(true);
@@ -111,7 +122,40 @@ public class UsersDaoCleanJdbcImpl implements UsersDao {
 
     @Override
     public UserEntity userInfo(String userName) {
-        return null;
+        String sqlSelectUser = "SELECT * FROM users WHERE username = ?";
+        String sqlSelectAuthorities = "SELECT * FROM authorities WHERE user_id = ?";
+        UserEntity user = new UserEntity();
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedUserStatement = connection.prepareStatement(sqlSelectUser);
+             PreparedStatement preparedStatementAuthorities = connection.prepareStatement(sqlSelectAuthorities)) {
+            preparedUserStatement.setString(1, userName);
+            ResultSet rsUser = preparedUserStatement.executeQuery();
+            if (rsUser.next()) {
+                user.setId((UUID) rsUser.getObject("id"));
+                user.setUsername(rsUser.getString("username"));
+                user.setPassword(rsUser.getString("password"));
+                user.setEnabled(rsUser.getBoolean("enabled"));
+                user.setAccountNonExpired(rsUser.getBoolean("account_non_expired"));
+                user.setAccountNonLocked(rsUser.getBoolean("account_non_locked"));
+                user.setCredentialsNonExpired(rsUser.getBoolean("credentials_non_expired"));
+
+                List<AuthorityEntity> authorityEntitiesList = new ArrayList<>();
+                preparedStatementAuthorities.setObject(1, user.getId());
+                ResultSet rsAuth = preparedStatementAuthorities.executeQuery();
+                while (rsAuth.next()) {
+                    AuthorityEntity entity = new AuthorityEntity();
+                    entity.setId((UUID) rsAuth.getObject("id"));
+                    entity.setAuthority(Authority.valueOf(rsAuth.getString("authority")));
+                    authorityEntitiesList.add(entity);
+                }
+
+                return user;
+            } else {
+                throw new IllegalArgumentException("User " + userName + "not fund");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
