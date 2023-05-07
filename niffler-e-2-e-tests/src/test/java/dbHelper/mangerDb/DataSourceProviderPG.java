@@ -12,8 +12,6 @@ public enum DataSourceProviderPG {
 	private Map<ServiceDB, DataSource> dataSourceMap = new ConcurrentHashMap<>();
 
 	public DataSource getDataSource(ServiceDB serviceDB) {
-		System.out.println(Config.getConfig().getDBLogin());
-		System.out.println(Config.getConfig().getDbHost());
 		return dataSourceMap.computeIfAbsent(serviceDB, service -> {
 			PGSimpleDataSource postgresDataSource = new PGSimpleDataSource();
 			postgresDataSource.setUrl(service.getJdbcUrl());

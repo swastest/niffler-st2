@@ -42,24 +42,34 @@ public class GenerateUserExtension implements BeforeEachCallback, ParameterResol
                 user.setAccountNonExpired(true);
                 user.setCredentialsNonExpired(true);
                 user.setAuthorities(authorities);
-                dao.createUser((UserEntity) parameter.getParameterizedType());
+                dao.createUser(user);
                 userEntities.add(user);
             }
         }
+        context.getStore(CREATE_USER).put(getTestUniqueId(context), userEntities);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void afterEach(ExtensionContext context) throws Exception {
-
+        List<UserEntity> list = context.getStore(CREATE_USER).get(getTestUniqueId(context), List.class);
+        dao.deleteUser(list.iterator().next());
     }
 
     @Override
     public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
-        return false;
+        return parameterContext.getParameter().isAnnotationPresent(GenerateUser.class) &&
+                parameterContext.getParameter().getType().isAssignableFrom(UserEntity.class);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public Object resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
-        return null;
+    public UserEntity resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
+        List<UserEntity> userEntities = extensionContext.getStore(CREATE_USER).get(getTestUniqueId(extensionContext), List.class);
+        return userEntities.get(parameterContext.getIndex());
+    }
+
+    private String getTestUniqueId(ExtensionContext context) {
+        return context.getUniqueId();
     }
 }

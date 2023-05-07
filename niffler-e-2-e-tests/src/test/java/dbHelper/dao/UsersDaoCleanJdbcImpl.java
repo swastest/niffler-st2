@@ -102,11 +102,10 @@ public class UsersDaoCleanJdbcImpl implements UsersDao {
             connection.setAutoCommit(false);
             try (PreparedStatement deleteUserStatement = connection.prepareStatement(deleteUser);
                  PreparedStatement deleteAuthStatement = connection.prepareStatement(deleteAuthority)) {
-                deleteUserStatement.setString(1, userId);
-                deleteUserStatement.executeUpdate();
-
-                deleteAuthStatement.setString(1, userId);
+                deleteAuthStatement.setObject(1, UUID.fromString(userId));
                 deleteAuthStatement.executeUpdate();
+                deleteUserStatement.setObject(1, UUID.fromString(userId));
+                deleteUserStatement.executeUpdate();
             } catch (SQLException e) {
                 connection.rollback();
                 connection.setAutoCommit(true);
