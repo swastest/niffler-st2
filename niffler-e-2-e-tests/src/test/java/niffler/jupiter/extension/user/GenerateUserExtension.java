@@ -1,7 +1,9 @@
 package niffler.jupiter.extension.user;
 
 import com.github.javafaker.Faker;
+import dbHelper.dao.UsersDao;
 import dbHelper.dao.UsersDaoCleanJdbcImpl;
+import dbHelper.dao.UsersDaoSpringJdbcImpl;
 import dbHelper.entity.authEntity.Authority;
 import dbHelper.entity.authEntity.AuthorityEntity;
 import dbHelper.entity.authEntity.UserEntity;
@@ -17,7 +19,7 @@ import java.util.stream.Stream;
 public class GenerateUserExtension implements BeforeEachCallback, ParameterResolver, AfterEachCallback {
 
     public static ExtensionContext.Namespace CREATE_USER = ExtensionContext.Namespace.create(GenerateUserExtension.class);
-    private UsersDaoCleanJdbcImpl dao = new UsersDaoCleanJdbcImpl();
+    private UsersDao dao = new UsersDaoSpringJdbcImpl();
     private Faker faker = new Faker();
 
     @Override
