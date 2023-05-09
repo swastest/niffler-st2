@@ -1,8 +1,11 @@
 package dbHelper.dao;
 
 import dbHelper.entity.authEntity.UserEntity;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 public interface UsersDao {
+    PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
     int createUser(UserEntity user);
     int updateUser(UserEntity user);
     void deleteUser(UserEntity user);

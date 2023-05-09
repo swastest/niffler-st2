@@ -23,8 +23,6 @@ import java.util.UUID;
 public class UsersDaoSpringJdbcImpl implements UsersDao {
     private final JdbcTemplate jdbcTemplate;
     private final TransactionTemplate transactionTemplate;
-    private static final PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-
 
     public UsersDaoSpringJdbcImpl() {
         DataSourceTransactionManager transactionManager =
@@ -67,14 +65,15 @@ public class UsersDaoSpringJdbcImpl implements UsersDao {
     @Override
     public int updateUser(UserEntity user) {
         return transactionTemplate.execute(status -> {
-            jdbcTemplate.update("UPDATE users SET username = ?, password = ?, enabled = ?, account_non_expired =?," +
-                            "account_non_locked =?, credentials_non_expired = ? , ",
+          jdbcTemplate.update("UPDATE users SET username = ?, password = ?, enabled = ?, account_non_expired =?," +
+                            "account_non_locked =?, credentials_non_expired = ? where username = ?",
                     user.getUsername(), user.getPassword(), user.getEnabled(), user.getAccountNonExpired(),
-                    user.getAccountNonLocked(), user.getCredentialsNonExpired());
-            if (user.getAuthorities() != null) {
-                user.getAuthorities().stream().forEach(a -> jdbcTemplate
-                        .update("UPDATE authorities SET authority = ? WHERE user_id =?", a, user.getId()));
-            }
+                    user.getAccountNonLocked(), user.getCredentialsNonExpired(), user.getUsername());
+//            if (user.getAuthorities() != null) {
+//                UUID userId = UUID.fromString(getUserId(user.getUsername()));
+//                user.getAuthorities().stream().forEach(a -> jdbcTemplate
+//                        .update("UPDATE authorities SET authority = ? WHERE user_id =?", a, userId));
+//            }
             return 1;
         });
     }

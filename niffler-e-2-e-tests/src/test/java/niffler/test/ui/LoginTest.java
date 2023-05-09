@@ -3,12 +3,21 @@ package niffler.test.ui;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
+import dbHelper.dao.UsersDao;
+import dbHelper.dao.UsersDaoCleanJdbcImpl;
+import dbHelper.dao.UsersDaoHibernateImpl;
+import dbHelper.dao.UsersDaoSpringJdbcImpl;
+import dbHelper.entity.authEntity.Authority;
+import dbHelper.entity.authEntity.AuthorityEntity;
 import dbHelper.entity.authEntity.UserEntity;
 import io.qameta.allure.AllureId;
 import niffler.jupiter.annotation.GenerateUser;
 import niffler.jupiter.annotation.User;
 import niffler.model.UserJson;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
+import java.util.stream.Stream;
 
 import static com.codeborne.selenide.Selenide.$;
 
@@ -34,6 +43,27 @@ public class LoginTest extends BaseWebTest {
         System.out.println(user1.getPassword());
         System.out.println(user2.getUsername());
         System.out.println(user2.getPassword());
+    }
+
+    @Test
+    void testDao(){
+        UsersDao dao = new UsersDaoHibernateImpl();
+        UserEntity user = new UserEntity();
+        List<AuthorityEntity> authorities = Stream.of(Authority.read, Authority.write)
+                .map(authVal -> {
+                    AuthorityEntity authorityEntity = new AuthorityEntity();
+                    authorityEntity.setAuthority(authVal);
+                    authorityEntity.setUser(user);
+                    return authorityEntity;
+                }).toList();
+        user.setPassword("test1");
+        user.setUsername("test1");
+        user.setAuthorities(authorities);
+        user.setEnabled(false);
+        user.setAccountNonLocked(true);
+        user.setAccountNonExpired(true);
+        user.setCredentialsNonExpired(true);
+        dao.updateUser(user);
     }
 
     @AllureId("2")

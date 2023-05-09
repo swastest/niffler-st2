@@ -5,8 +5,6 @@ import dbHelper.entity.authEntity.AuthorityEntity;
 import dbHelper.entity.authEntity.UserEntity;
 import dbHelper.mangerDb.DataSourceProviderPG;
 import dbHelper.mangerDb.ServiceDB;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -17,7 +15,6 @@ import java.util.stream.Collectors;
 
 public class UsersDaoCleanJdbcImpl implements UsersDao {
     private static final DataSource dataSource = DataSourceProviderPG.INSTANCE.getDataSource(ServiceDB.NIFFLER_AUTH);
-    private static final PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
     @Override
     public int createUser(UserEntity user) {
@@ -76,10 +73,11 @@ public class UsersDaoCleanJdbcImpl implements UsersDao {
     public int updateUser(UserEntity user) {
         int executeUpdate;
         String updateSql = "UPDATE users SET username = ?, password = ?, enabled = ?, account_non_expired =?," +
-                "account_non_locked =?, credentials_non_expired = ?";
+                "account_non_locked =?, credentials_non_expired = ? where username = ?";
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(updateSql)) {
             statement.setString(1, user.getUsername());
+            statement.setString(7, user.getUsername());
             statement.setString(2, encoder.encode(user.getPassword()));
             statement.setBoolean(3, user.getEnabled());
             statement.setBoolean(4, user.getAccountNonExpired());
