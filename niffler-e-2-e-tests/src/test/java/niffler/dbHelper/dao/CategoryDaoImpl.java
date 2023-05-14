@@ -1,7 +1,7 @@
-package dbHelper.dao;
+package niffler.dbHelper.dao;
 
-import dbHelper.mangerDb.DataSourceProviderPG;
-import dbHelper.mangerDb.ServiceDB;
+import niffler.dbHelper.mangerDb.DataSourceProviderPG;
+import niffler.dbHelper.mangerDb.ServiceDB;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;

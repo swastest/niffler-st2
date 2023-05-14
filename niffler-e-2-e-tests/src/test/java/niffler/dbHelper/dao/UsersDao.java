@@ -1,6 +1,6 @@
-package dbHelper.dao;
+package niffler.dbHelper.dao;
 
-import dbHelper.entity.authEntity.UserEntity;
+import niffler.dbHelper.entity.authEntity.UserEntity;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 

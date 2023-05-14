@@ -1,17 +1,15 @@
-package dbHelper.dao;
+package niffler.dbHelper.dao;
 
-import dbHelper.entity.authEntity.Authority;
-import dbHelper.entity.authEntity.AuthorityEntity;
-import dbHelper.entity.authEntity.UserEntity;
-import dbHelper.mangerDb.DataSourceProviderPG;
-import dbHelper.mangerDb.ServiceDB;
+import niffler.dbHelper.entity.authEntity.Authority;
+import niffler.dbHelper.entity.authEntity.AuthorityEntity;
+import niffler.dbHelper.entity.authEntity.UserEntity;
+import niffler.dbHelper.mangerDb.DataSourceProviderPG;
+import niffler.dbHelper.mangerDb.ServiceDB;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.JdbcTransactionManager;
 import org.springframework.jdbc.support.KeyHolder;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import java.sql.PreparedStatement;

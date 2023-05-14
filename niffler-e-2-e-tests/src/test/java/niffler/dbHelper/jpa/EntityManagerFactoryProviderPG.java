@@ -1,12 +1,9 @@
-package dbHelper.jpa;
+package niffler.dbHelper.jpa;
 
-import config.Config;
-import dbHelper.mangerDb.ServiceDB;
+import niffler.dbHelper.mangerDb.ServiceDB;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
-import org.postgresql.ds.PGSimpleDataSource;
 
-import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

@@ -1,11 +1,9 @@
-package dbHelper.dao;
+package niffler.dbHelper.dao;
 
-import dbHelper.entity.authEntity.UserEntity;
-import dbHelper.jpa.EntityManagerFactoryProviderPG;
-import dbHelper.jpa.JpaTransactionManager;
-import dbHelper.mangerDb.ServiceDB;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
+import niffler.dbHelper.entity.authEntity.UserEntity;
+import niffler.dbHelper.jpa.EntityManagerFactoryProviderPG;
+import niffler.dbHelper.jpa.JpaTransactionManager;
+import niffler.dbHelper.mangerDb.ServiceDB;
 
 public class UsersDaoHibernateImpl extends JpaTransactionManager implements UsersDao {
 
@@ -26,13 +24,13 @@ public class UsersDaoHibernateImpl extends JpaTransactionManager implements User
 
     @Override
     public int updateUser(UserEntity user) {
-        UserEntity userFind = userInfo(user.getUsername());
-        userFind.setPassword(encoder.encode(user.getPassword()));
-        userFind.setAccountNonExpired(user.getAccountNonExpired());
-        userFind.setAccountNonLocked(user.getAccountNonLocked());
-        userFind.setEnabled(user.getEnabled());
-        userFind.setCredentialsNonExpired(user.getCredentialsNonExpired());
-        merge(userFind);
+//        UserEntity userFind = userInfo(user.getUsername());
+//        userFind.setPassword(encoder.encode(user.getPassword()));
+//        userFind.setAccountNonExpired(user.getAccountNonExpired());
+//        userFind.setAccountNonLocked(user.getAccountNonLocked());
+//        userFind.setEnabled(user.getEnabled());
+//        userFind.setCredentialsNonExpired(user.getCredentialsNonExpired());
+        merge(user);
          return 0;
     }
 

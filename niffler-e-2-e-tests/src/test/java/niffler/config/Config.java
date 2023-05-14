@@ -1,4 +1,4 @@
-package config;
+package niffler.config;
 
 public interface Config {
     static Config getConfig() {

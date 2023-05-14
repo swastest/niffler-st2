@@ -1,13 +1,11 @@
 package niffler.jupiter.extension.user;
 
 import com.github.javafaker.Faker;
-import dbHelper.dao.UsersDao;
-import dbHelper.dao.UsersDaoCleanJdbcImpl;
-import dbHelper.dao.UsersDaoHibernateImpl;
-import dbHelper.dao.UsersDaoSpringJdbcImpl;
-import dbHelper.entity.authEntity.Authority;
-import dbHelper.entity.authEntity.AuthorityEntity;
-import dbHelper.entity.authEntity.UserEntity;
+import niffler.dbHelper.dao.UsersDao;
+import niffler.dbHelper.dao.UsersDaoHibernateImpl;
+import niffler.dbHelper.entity.authEntity.Authority;
+import niffler.dbHelper.entity.authEntity.AuthorityEntity;
+import niffler.dbHelper.entity.authEntity.UserEntity;
 import niffler.jupiter.annotation.GenerateUser;
 import org.junit.jupiter.api.extension.*;
 
@@ -26,12 +24,13 @@ public class GenerateUserExtension implements BeforeEachCallback, ParameterResol
     @Override
 
     public void beforeEach(ExtensionContext context) throws Exception {
-        List<Parameter> parameters = Arrays.asList(context.getRequiredTestMethod().getParameters());
         List<UserEntity> userEntities = new ArrayList<>();
+        List<Parameter> parameters = Arrays.asList(context.getRequiredTestMethod().getParameters()).stream()
+                .filter(parameter -> parameter.isAnnotationPresent(GenerateUser.class))
+                .filter(parameter -> parameter.getType().isAssignableFrom(UserEntity.class)).toList();
         for (Parameter parameter : parameters) {
-            if (parameter.isAnnotationPresent(GenerateUser.class) && parameter.getType().isAssignableFrom(UserEntity.class)) {
                 UserEntity user = new UserEntity();
-                List<AuthorityEntity> authorities = Stream.of(Authority.read, Authority.write)
+                List<AuthorityEntity> authorities = Stream.of(Authority.values())
                         .map(authVal -> {
                             AuthorityEntity authorityEntity = new AuthorityEntity();
                             authorityEntity.setAuthority(authVal);
@@ -48,7 +47,6 @@ public class GenerateUserExtension implements BeforeEachCallback, ParameterResol
                 user.setAuthorities(authorities);
                 dao.createUser(user);
                 userEntities.add(user);
-            }
         }
         context.getStore(CREATE_USER).put(getTestUniqueId(context), userEntities);
     }

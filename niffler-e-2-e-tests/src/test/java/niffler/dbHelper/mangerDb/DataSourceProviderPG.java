@@ -1,6 +1,6 @@
-package dbHelper.mangerDb;
+package niffler.dbHelper.mangerDb;
 
-import config.Config;
+import niffler.config.Config;
 import org.postgresql.ds.PGSimpleDataSource;
 
 import javax.sql.DataSource;

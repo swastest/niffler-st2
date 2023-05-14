@@ -1,7 +1,7 @@
 package niffler.jupiter.extension;
 
-import dbHelper.dao.CategoryDaoImpl;
-import dbHelper.dao.CategoryDao;
+import niffler.dbHelper.dao.CategoryDaoImpl;
+import niffler.dbHelper.dao.CategoryDao;
 import niffler.jupiter.annotation.GenerateCategory;
 import niffler.api.CategoryService;
 import niffler.model.CategoryJson;

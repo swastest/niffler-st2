@@ -3,13 +3,11 @@ package niffler.test.ui;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
-import dbHelper.dao.UsersDao;
-import dbHelper.dao.UsersDaoCleanJdbcImpl;
-import dbHelper.dao.UsersDaoHibernateImpl;
-import dbHelper.dao.UsersDaoSpringJdbcImpl;
-import dbHelper.entity.authEntity.Authority;
-import dbHelper.entity.authEntity.AuthorityEntity;
-import dbHelper.entity.authEntity.UserEntity;
+import niffler.dbHelper.dao.UsersDao;
+import niffler.dbHelper.dao.UsersDaoHibernateImpl;
+import niffler.dbHelper.entity.authEntity.Authority;
+import niffler.dbHelper.entity.authEntity.AuthorityEntity;
+import niffler.dbHelper.entity.authEntity.UserEntity;
 import io.qameta.allure.AllureId;
 import niffler.jupiter.annotation.GenerateUser;
 import niffler.jupiter.annotation.User;

@@ -1,10 +1,10 @@
-package dbHelper.dao;
+package niffler.dbHelper.dao;
 
-import dbHelper.entity.authEntity.Authority;
-import dbHelper.entity.authEntity.AuthorityEntity;
-import dbHelper.entity.authEntity.UserEntity;
-import dbHelper.mangerDb.DataSourceProviderPG;
-import dbHelper.mangerDb.ServiceDB;
+import niffler.dbHelper.entity.authEntity.Authority;
+import niffler.dbHelper.entity.authEntity.AuthorityEntity;
+import niffler.dbHelper.entity.authEntity.UserEntity;
+import niffler.dbHelper.mangerDb.DataSourceProviderPG;
+import niffler.dbHelper.mangerDb.ServiceDB;
 
 import javax.sql.DataSource;
 import java.sql.*;

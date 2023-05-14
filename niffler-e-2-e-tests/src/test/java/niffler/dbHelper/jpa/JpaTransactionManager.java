@@ -1,4 +1,4 @@
-package dbHelper.jpa;
+package niffler.dbHelper.jpa;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;

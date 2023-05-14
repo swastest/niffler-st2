@@ -1,4 +1,4 @@
-package dbHelper.jpa;
+package niffler.dbHelper.jpa;
 
 import jakarta.persistence.*;
 import jakarta.persistence.criteria.CriteriaBuilder;

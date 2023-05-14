@@ -1,4 +1,4 @@
-package dbHelper.dao;
+package niffler.dbHelper.dao;
 
 import java.util.Map;
 

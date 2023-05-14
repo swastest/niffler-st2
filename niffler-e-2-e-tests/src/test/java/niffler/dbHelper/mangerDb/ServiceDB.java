@@ -1,6 +1,6 @@
-package dbHelper.mangerDb;
+package niffler.dbHelper.mangerDb;
 
-import config.Config;
+import niffler.config.Config;
 
 public enum ServiceDB {
     NIFFLER_AUTH("jdbc:postgresql://%s:%d/niffler-auth"),

@@ -1,4 +1,4 @@
-package dbHelper.entity.authEntity;
+package niffler.dbHelper.entity.authEntity;
 
 import jakarta.persistence.*;
 

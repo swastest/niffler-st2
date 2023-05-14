@@ -1,9 +1,9 @@
-package config;
+package niffler.config;
 
-public class DockerConfig implements Config {
+public class LocalConfig implements Config{
     @Override
     public String getDbHost() {
-        return "niffler-all-db";
+        return "localhost";
     }
 
     @Override
@@ -13,11 +13,11 @@ public class DockerConfig implements Config {
 
     @Override
     public String getDBLogin() {
-        return null;
+        return "postgres";
     }
 
     @Override
     public String getDBPassword() {
-        return null;
+        return "secret";
     }
 }
