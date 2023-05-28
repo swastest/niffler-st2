@@ -33,3 +33,6 @@ Homework #4
 [UsersDaoHibernateImpl.java](src%2Ftest%2Fjava%2FdbHelper%2Fdao%2FUsersDaoHibernateImpl.java)
 [UsersDaoSpringJdbcImpl.java](src%2Ftest%2Fjava%2FdbHelper%2Fdao%2FUsersDaoSpringJdbcImpl.java)
 
+
+./gradlew :niffler-e-2-e-tests:dependencies
+
