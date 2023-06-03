@@ -7,7 +7,7 @@ import guru.qa.niffler.page.MainFrontPage;
 import guru.qa.niffler.page.MainPage;
 import org.junit.jupiter.api.Test;
 
-public class LoginNewUserTest {
+public class LoginNewUserTest extends BaseWebTest {
     @Test
     void positiveLogin2(@GenerateUser UserEntity user) {
         System.out.println(user.toString());
