@@ -2,6 +2,7 @@ package guru.qa.niffler.jupiter.extension.user;
 
 import com.github.javafaker.Faker;
 import guru.qa.niffler.dbHelper.dao.UsersDao;
+import guru.qa.niffler.dbHelper.dao.UsersDaoSpringJdbcImpl;
 import guru.qa.niffler.jupiter.annotation.GenerateUser;
 import guru.qa.niffler.dbHelper.dao.UsersDaoHibernateImpl;
 import guru.qa.niffler.dbHelper.entity.authEntity.Authority;
@@ -18,12 +19,13 @@ import java.util.stream.Stream;
 public class GenerateUserExtension implements BeforeEachCallback, ParameterResolver, AfterEachCallback {
 
     public static ExtensionContext.Namespace CREATE_USER = ExtensionContext.Namespace.create(GenerateUserExtension.class);
-    private UsersDao dao = new UsersDaoHibernateImpl();
     private Faker faker = new Faker();
 
     @Override
 
     public void beforeEach(ExtensionContext context) throws Exception {
+        UsersDao dao = new UsersDaoHibernateImpl();
+
         List<UserEntity> userEntities = new ArrayList<>();
         List<Parameter> parameters = Arrays.asList(context.getRequiredTestMethod().getParameters()).stream()
                 .filter(parameter -> parameter.isAnnotationPresent(GenerateUser.class))
@@ -54,6 +56,7 @@ public class GenerateUserExtension implements BeforeEachCallback, ParameterResol
     @SuppressWarnings("unchecked")
     @Override
     public void afterEach(ExtensionContext context) throws Exception {
+        UsersDao dao = new UsersDaoHibernateImpl();
         List<UserEntity> list = context.getStore(CREATE_USER).get(getTestUniqueId(context), List.class);
         for(UserEntity user : list){
             dao.deleteUser(user);

@@ -35,4 +35,8 @@ public class LocalConfig implements Config{
     public String getAuthUrl() {
         return "http://127.0.0.1:9000";
     }
+
+    public String getUserDataUrl() {
+        return "http://127.0.0.1:8089";
+    }
 }

@@ -63,7 +63,7 @@ public class UsersDaoSpringJdbcImpl implements UsersDao {
     @Override
     public int updateUser(UserEntity user) {
         return transactionTemplate.execute(status -> {
-          jdbcTemplate.update("UPDATE users SET username = ?, password = ?, enabled = ?, account_non_expired =?," +
+            jdbcTemplate.update("UPDATE users SET username = ?, password = ?, enabled = ?, account_non_expired =?," +
                             "account_non_locked =?, credentials_non_expired = ? where username = ?",
                     user.getUsername(), user.getPassword(), user.getEnabled(), user.getAccountNonExpired(),
                     user.getAccountNonLocked(), user.getCredentialsNonExpired(), user.getUsername());
@@ -78,7 +78,14 @@ public class UsersDaoSpringJdbcImpl implements UsersDao {
 
     @Override
     public void deleteUser(UserEntity user) {
-        UUID userId = UUID.fromString(getUserId(user.getUsername()));
+        UUID userId = (user.getId() == null) ? UUID.fromString(getUserId(user.getUsername())) : user.getId();
+
+//        UUID userId;
+//        if (user.getId() == null) {
+//            userId = UUID.fromString(getUserId(user.getUsername()));
+//        } else {
+//            userId = user.getId();
+//        }
         transactionTemplate.execute(status -> {
             jdbcTemplate.update("DELETE FROM authorities WHERE user_id =?", userId);
             return jdbcTemplate.update("DELETE FROM users WHERE id =?", userId);
@@ -88,7 +95,7 @@ public class UsersDaoSpringJdbcImpl implements UsersDao {
     @Override
     public UserEntity userInfo(String userName) {
         UserEntity user = new UserEntity();
-        jdbcTemplate.query("SELECT * FROM users WHERE username = ?",
+        jdbcTemplate.query("SELECT * FROM users WHERE username = ?;",
                 rs -> {
                     user.setId((UUID) rs.getObject("id"));
                     user.setUsername(rs.getString("username"));
@@ -97,14 +104,15 @@ public class UsersDaoSpringJdbcImpl implements UsersDao {
                     user.setAccountNonExpired(rs.getBoolean("account_non_expired"));
                     user.setAccountNonLocked(rs.getBoolean("account_non_locked"));
                     user.setCredentialsNonExpired(rs.getBoolean("credentials_non_expired"));
-                });
+                }, userName);
 
-        List<AuthorityEntity> authorityEntities = jdbcTemplate.query("SELECT * FROM authorities WHERE user_id= ?",
+        List<AuthorityEntity> authorityEntities = jdbcTemplate.query("SELECT * FROM authorities WHERE user_id= ?;",
                 rs -> {
                     List<AuthorityEntity> authorities = new ArrayList<>();
                     while (rs.next()) {
                         AuthorityEntity authority = new AuthorityEntity();
                         authority.setAuthority(Authority.valueOf(rs.getString("authority")));
+                        authorities.add(authority);
                     }
                     return authorities;
                 },

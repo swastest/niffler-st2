@@ -16,4 +16,5 @@ public interface Config {
     String getSpendUrl();
     String getFrontUrl();
     String getAuthUrl();
+    String getUserDataUrl();
 }

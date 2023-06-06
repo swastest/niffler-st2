@@ -35,4 +35,9 @@ public class DockerConfig implements Config {
     public String getAuthUrl() {
         return null;
     }
+
+    @Override
+    public String getUserDataUrl() {
+        return null;
+    }
 }
