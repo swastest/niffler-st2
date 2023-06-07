@@ -5,7 +5,8 @@ import guru.qa.niffler.dbHelper.dao.UsersDaoHibernateImpl;
 import guru.qa.niffler.dbHelper.entity.authEntity.Authority;
 import guru.qa.niffler.dbHelper.entity.authEntity.AuthorityEntity;
 import guru.qa.niffler.dbHelper.entity.authEntity.UserEntity;
-import guru.qa.niffler.jupiter.annotation.GenerateUser;
+import guru.qa.niffler.jupiter.annotation.GenerateUserApi;
+import guru.qa.niffler.jupiter.annotation.GenerateUserDataBase;
 import guru.qa.niffler.jupiter.annotation.User;
 import guru.qa.niffler.model.UserJson;
 import io.qameta.allure.AllureId;
@@ -28,8 +29,8 @@ public class UserQueueExampleTests {
         System.out.println("Test3==========" + userJson11.toString());
     }
     @Test
-    void createUserJdbc(@GenerateUser() UserEntity user1,
-                        @GenerateUser() UserEntity user2) {
+    void createUserJdbc(@GenerateUserDataBase() UserEntity user1,
+                        @GenerateUserDataBase() UserEntity user2) {
         System.out.println(user1.getUsername());
         System.out.println(user1.getPassword());
         System.out.println(user2.getUsername());
@@ -55,5 +56,15 @@ public class UserQueueExampleTests {
         user.setAccountNonExpired(true);
         user.setCredentialsNonExpired(true);
         dao.updateUser(user);
+    }
+
+    @GenerateUserApi(
+            username = "tatata",
+            password = "tatata",
+            submitPassword = "tatata"
+    )
+    @Test
+    void generateUserApi(UserJson userJson) {
+        System.out.println(userJson);
     }
 }

@@ -1,6 +1,6 @@
 package guru.qa.niffler.jupiter.annotation;
 
-import guru.qa.niffler.jupiter.extension.user.GenerateUserExtension;
+import guru.qa.niffler.jupiter.extension.user.GenerateUserDataBaseExtension;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.lang.annotation.ElementType;
@@ -10,6 +10,6 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.PARAMETER})
-@ExtendWith(GenerateUserExtension.class)
-public @interface GenerateUser {
+@ExtendWith(GenerateUserDataBaseExtension.class)
+public @interface GenerateUserDataBase {
 }

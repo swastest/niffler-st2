@@ -2,8 +2,7 @@ package guru.qa.niffler.jupiter.extension.user;
 
 import com.github.javafaker.Faker;
 import guru.qa.niffler.dbHelper.dao.UsersDao;
-import guru.qa.niffler.dbHelper.dao.UsersDaoSpringJdbcImpl;
-import guru.qa.niffler.jupiter.annotation.GenerateUser;
+import guru.qa.niffler.jupiter.annotation.GenerateUserDataBase;
 import guru.qa.niffler.dbHelper.dao.UsersDaoHibernateImpl;
 import guru.qa.niffler.dbHelper.entity.authEntity.Authority;
 import guru.qa.niffler.dbHelper.entity.authEntity.AuthorityEntity;
@@ -16,9 +15,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
-public class GenerateUserExtension implements BeforeEachCallback, ParameterResolver, AfterEachCallback {
+public class GenerateUserDataBaseExtension implements BeforeEachCallback, ParameterResolver, AfterEachCallback {
 
-    public static ExtensionContext.Namespace CREATE_USER = ExtensionContext.Namespace.create(GenerateUserExtension.class);
+    public static ExtensionContext.Namespace CREATE_USER = ExtensionContext.Namespace.create(GenerateUserDataBaseExtension.class);
     private Faker faker = new Faker();
 
     @Override
@@ -28,7 +27,7 @@ public class GenerateUserExtension implements BeforeEachCallback, ParameterResol
 
         List<UserEntity> userEntities = new ArrayList<>();
         List<Parameter> parameters = Arrays.asList(context.getRequiredTestMethod().getParameters()).stream()
-                .filter(parameter -> parameter.isAnnotationPresent(GenerateUser.class))
+                .filter(parameter -> parameter.isAnnotationPresent(GenerateUserDataBase.class))
                 .filter(parameter -> parameter.getType().isAssignableFrom(UserEntity.class)).toList();
         for (Parameter parameter : parameters) {
                 UserEntity user = new UserEntity();
@@ -65,7 +64,7 @@ public class GenerateUserExtension implements BeforeEachCallback, ParameterResol
 
     @Override
     public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
-        return parameterContext.getParameter().isAnnotationPresent(GenerateUser.class) &&
+        return parameterContext.getParameter().isAnnotationPresent(GenerateUserDataBase.class) &&
                 parameterContext.getParameter().getType().isAssignableFrom(UserEntity.class);
     }
 

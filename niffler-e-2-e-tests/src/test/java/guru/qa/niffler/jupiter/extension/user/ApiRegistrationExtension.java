@@ -24,9 +24,10 @@ public class ApiRegistrationExtension implements BeforeEachCallback, AfterTestEx
 
     @Override
     public void beforeEach(ExtensionContext context) throws Exception {
+        UserJson userJson;
         ApiRegistration annotation = context.getRequiredTestMethod().getAnnotation(ApiRegistration.class);
         if(annotation!=null){
-            UserJson userJson = doRegistration(annotation.login(), annotation.password(), annotation.submitPassword());
+            userJson =  doRegistration(annotation.login(), annotation.password(), annotation.submitPassword());
             context.getStore(API_REGISTRATION).put(getTestId(context), userJson);
         }
     }

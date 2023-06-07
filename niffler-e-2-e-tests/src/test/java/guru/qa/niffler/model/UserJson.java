@@ -106,8 +106,14 @@ public class UserJson {
     @Override
     public String toString() {
         return "UserJson{" +
-                "username='" + username + '\'' +
+                "id=" + id +
+                ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
+                ", firstname='" + firstname + '\'' +
+                ", surname='" + surname + '\'' +
+                ", currency=" + currency +
+                ", photo='" + photo + '\'' +
+                ", friendState=" + friendState +
                 '}';
     }
 }
