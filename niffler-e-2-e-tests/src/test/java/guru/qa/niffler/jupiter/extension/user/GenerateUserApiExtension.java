@@ -29,7 +29,7 @@ public class GenerateUserApiExtension implements BeforeEachCallback, ParameterRe
         }
         if (annotation.username().length() == 0) {
             String username = faker.funnyName().name();
-            String pass = faker.number().toString();
+           final String pass = faker.numerify("5-9");
             userJson = doRegistration(username, pass, pass);
         }
         context.getStore(CREATE_USER_API).put(getTestId(context), userJson);

@@ -59,9 +59,7 @@ public class UserQueueExampleTests {
     }
 
     @GenerateUserApi(
-            username = "tatata",
-            password = "tatata",
-            submitPassword = "tatata"
+
     )
     @Test
     void generateUserApi(UserJson userJson) {
