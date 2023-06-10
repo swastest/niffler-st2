@@ -36,3 +36,13 @@ Homework #4
 
 ./gradlew :niffler-e-2-e-tests:dependencies
 
+Homework #12
+* Реализовать полностью кастомный кондишн spend – написать корректный метод маппинга веб элемента на SpendJson (учитывающий формат дат) <br> 
+[SpendCondition.java](src%2Ftest%2Fjava%2Fguru%2Fqa%2Fniffler%2Fpage%2FselenideCondition%2FSpendCondition.java) <br>
+[SpendsWebTest.java](src%2Ftest%2Fjava%2Fguru%2Fqa%2Fniffler%2Ftest%2Fui%2FSpendsWebTest.java)
+* Реализовать аннотацию @GenerateUser для тестов – она должна создавать юзера через POST запрос в аус на /register и класть в контекст созданного юзера, полученного из userdata <br>
+[GenerateUserApiExtension.java](src%2Ftest%2Fjava%2Fguru%2Fqa%2Fniffler%2Fjupiter%2Fextension%2Fuser%2FGenerateUserApiExtension.java)<br>
+Тест generateUserApi [UserQueueExampleTests.java](src%2Ftest%2Fjava%2Fguru%2Fqa%2Fniffler%2Ftest%2FsoutTests%2FUserQueueExampleTests.java)
+* Покрыть юнит-тестами все методы в классе GrpcCurrencyService <br>
+[GrpcCurrencyServiceTest.java](..%2Fniffler-currency%2Fsrc%2Ftest%2Fjava%2Fguru%2Fqa%2Fniffler%2Fservice%2FGrpcCurrencyServiceTest.java)
+

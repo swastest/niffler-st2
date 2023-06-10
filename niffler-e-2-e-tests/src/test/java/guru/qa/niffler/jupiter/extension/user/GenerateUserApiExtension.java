@@ -7,7 +7,6 @@ import guru.qa.niffler.dbHelper.dao.UsersDao;
 import guru.qa.niffler.dbHelper.dao.UsersDaoSpringJdbcImpl;
 import guru.qa.niffler.dbHelper.entity.authEntity.UserEntity;
 import guru.qa.niffler.jupiter.annotation.GenerateUserApi;
-import guru.qa.niffler.model.CategoryJson;
 import guru.qa.niffler.model.UserJson;
 import org.junit.jupiter.api.extension.*;
 

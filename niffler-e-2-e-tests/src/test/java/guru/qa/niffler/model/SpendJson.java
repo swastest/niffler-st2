@@ -3,6 +3,7 @@ package guru.qa.niffler.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Date;
+import java.util.Objects;
 import java.util.UUID;
 
 public class SpendJson {
@@ -78,5 +79,18 @@ public class SpendJson {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    @Override
+    public String toString() {
+        return "SpendJson{" +
+                "id=" + id +
+                ", spendDate=" + spendDate +
+                ", category='" + category + '\'' +
+                ", currency=" + currency +
+                ", amount=" + amount +
+                ", description='" + description + '\'' +
+                ", username='" + username + '\'' +
+                '}';
     }
 }

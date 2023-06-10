@@ -59,7 +59,6 @@ public class UserQueueExampleTests {
     }
 
     @GenerateUserApi(
-
     )
     @Test
     void generateUserApi(UserJson userJson) {
