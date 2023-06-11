@@ -54,15 +54,15 @@ public final class NifflerCurrencyProto {
       "es\022=\n\017desiredCurrency\030\002 \001(\0162$.guru.qa.gr" +
       "pc.niffler.CurrencyValues\022\016\n\006amount\030\003 \001(" +
       "\001\"-\n\021CalculateResponse\022\030\n\020calculatedAmou" +
-      "nt\030\001 \001(\001*4\n\016CurrencyValues\022\007\n\003RUB\020\000\022\007\n\003U" +
-      "SD\020\001\022\007\n\003EUR\020\002\022\007\n\003KZT\020\0032\322\001\n\026NifflerCurren" +
-      "cyService\022T\n\020GetAllCurrencies\022\026.google.p" +
-      "rotobuf.Empty\032&.guru.qa.grpc.niffler.Cur" +
-      "rencyResponse\"\000\022b\n\rCalculateRate\022&.guru." +
-      "qa.grpc.niffler.CalculateRequest\032\'.guru." +
-      "qa.grpc.niffler.CalculateResponse\"\000B3\n\031g" +
-      "uru.qa.grpc.niffler.grpcB\024NifflerCurrenc" +
-      "yProtoP\001b\006proto3"
+      "nt\030\001 \001(\001*C\n\016CurrencyValues\022\r\n\tUNDEFINED\020" +
+      "\000\022\007\n\003USD\020\001\022\007\n\003EUR\020\002\022\007\n\003KZT\020\003\022\007\n\003RUB\020\0042\322\001" +
+      "\n\026NifflerCurrencyService\022T\n\020GetAllCurren" +
+      "cies\022\026.google.protobuf.Empty\032&.guru.qa.g" +
+      "rpc.niffler.CurrencyResponse\"\000\022b\n\rCalcul" +
+      "ateRate\022&.guru.qa.grpc.niffler.Calculate" +
+      "Request\032\'.guru.qa.grpc.niffler.Calculate" +
+      "Response\"\000B3\n\031guru.qa.grpc.niffler.grpcB" +
+      "\024NifflerCurrencyProtoP\001b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,

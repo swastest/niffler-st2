@@ -87,7 +87,7 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
-    if (currency_ != guru.qa.grpc.niffler.grpc.CurrencyValues.RUB.getNumber()) {
+    if (currency_ != guru.qa.grpc.niffler.grpc.CurrencyValues.UNDEFINED.getNumber()) {
       output.writeEnum(1, currency_);
     }
     if (java.lang.Double.doubleToRawLongBits(currencyRate_) != 0) {
@@ -102,7 +102,7 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
-    if (currency_ != guru.qa.grpc.niffler.grpc.CurrencyValues.RUB.getNumber()) {
+    if (currency_ != guru.qa.grpc.niffler.grpc.CurrencyValues.UNDEFINED.getNumber()) {
       size += com.google.protobuf.CodedOutputStream
         .computeEnumSize(1, currency_);
     }

@@ -40,4 +40,14 @@ public class DockerConfig implements Config {
     public String getUserDataUrl() {
         return null;
     }
+
+    @Override
+    public String getCurrencyGrpcUrl() {
+        return null;
+    }
+
+    @Override
+    public int getCurrencyGrpcPort() {
+        return 0;
+    }
 }

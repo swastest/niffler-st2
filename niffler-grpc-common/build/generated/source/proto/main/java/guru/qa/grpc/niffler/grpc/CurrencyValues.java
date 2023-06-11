@@ -9,9 +9,9 @@ package guru.qa.grpc.niffler.grpc;
 public enum CurrencyValues
     implements com.google.protobuf.ProtocolMessageEnum {
   /**
-   * <code>RUB = 0;</code>
+   * <code>UNDEFINED = 0;</code>
    */
-  RUB(0),
+  UNDEFINED(0),
   /**
    * <code>USD = 1;</code>
    */
@@ -24,13 +24,17 @@ public enum CurrencyValues
    * <code>KZT = 3;</code>
    */
   KZT(3),
+  /**
+   * <code>RUB = 4;</code>
+   */
+  RUB(4),
   UNRECOGNIZED(-1),
   ;
 
   /**
-   * <code>RUB = 0;</code>
+   * <code>UNDEFINED = 0;</code>
    */
-  public static final int RUB_VALUE = 0;
+  public static final int UNDEFINED_VALUE = 0;
   /**
    * <code>USD = 1;</code>
    */
@@ -43,6 +47,10 @@ public enum CurrencyValues
    * <code>KZT = 3;</code>
    */
   public static final int KZT_VALUE = 3;
+  /**
+   * <code>RUB = 4;</code>
+   */
+  public static final int RUB_VALUE = 4;
 
 
   public final int getNumber() {
@@ -69,10 +77,11 @@ public enum CurrencyValues
    */
   public static CurrencyValues forNumber(int value) {
     switch (value) {
-      case 0: return RUB;
+      case 0: return UNDEFINED;
       case 1: return USD;
       case 2: return EUR;
       case 3: return KZT;
+      case 4: return RUB;
       default: return null;
     }
   }

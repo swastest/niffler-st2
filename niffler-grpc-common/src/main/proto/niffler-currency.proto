@@ -33,8 +33,9 @@ message CalculateResponse {
 }
 
 enum CurrencyValues {
-  RUB = 0;
+  UNDEFINED = 0;
   USD = 1;
   EUR = 2;
   KZT = 3;
+  RUB = 4;
 }

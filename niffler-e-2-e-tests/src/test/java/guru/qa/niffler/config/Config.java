@@ -17,4 +17,6 @@ public interface Config {
     String getFrontUrl();
     String getAuthUrl();
     String getUserDataUrl();
+    String getCurrencyGrpcUrl();
+    int getCurrencyGrpcPort();
 }

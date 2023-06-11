@@ -1,7 +1,13 @@
 package niffler.service;
 
+import com.google.protobuf.Timestamp;
+import guru.qa.grpc.niffler.grpc.SpendRequest;
+import guru.qa.grpc.niffler.grpc.SpendResponse;
+import guru.qa.grpc.niffler.grpc.SpendServiceGrpc;
+import io.grpc.stub.StreamObserver;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
+import net.devh.boot.grpc.server.service.GrpcService;
 import niffler.data.CategoryEntity;
 import niffler.data.SpendEntity;
 import niffler.data.repository.CategoryRepository;
@@ -16,19 +22,13 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Component
+//@GrpcService
 public class SpendService {
 
     private final SpendRepository spendRepository;
@@ -41,6 +41,86 @@ public class SpendService {
         this.categoryRepository = categoryRepository;
         this.grpcCurrencyClient = grpcCurrencyClient;
     }
+
+//
+//    @Override
+//    public void saveSpendForUser(SpendRequest request, StreamObserver<SpendResponse> responseObserver) {
+//        SpendEntity spendEntity = new SpendEntity();
+//        final String username = request.getUsername();
+//        final String category = request.getCategory();
+//        Timestamp timestamp = request.getSpendDate();
+//        Date date = new Date(timestamp.getSeconds() * 1000L);
+//
+//        spendEntity.setUsername(username);
+//        spendEntity.setSpendDate(date);
+//        spendEntity.setCurrency(CurrencyValues.valueOf(request.getCurrency().name()));
+//        spendEntity.setDescription(request.getDescription());
+//        spendEntity.setAmount(request.getAmount());
+//
+//        CategoryEntity categoryEntity = categoryRepository.findAllByUsername(username)
+//                .stream()
+//                .filter(c -> c.getCategory().equals(category))
+//                .findFirst()
+//                .orElseThrow(() -> new ResponseStatusException(
+//                        HttpStatus.BAD_REQUEST, "Can`t find category by given name: " + category));
+//
+//        spendEntity.setCategory(categoryEntity);
+//        spendRepository.save(spendEntity);
+//
+//
+//        SpendResponse response = SpendResponse.newBuilder()
+//                .setId(spendEntity.getId().toString())
+//                .setSpendDate(timestamp)
+//                .setCategory(request.getCategory())
+//                .setCurrency(request.getCurrency())
+//                .setAmount(spendEntity.getAmount())
+//                .setDescription(spendEntity.getDescription())
+//                .setUsername(spendEntity.getUsername())
+//                .build();
+//
+//        responseObserver.onNext(response);
+//        responseObserver.onCompleted();
+//    }
+//
+//    @Override
+//    public void editSpendForUser(SpendRequest request, StreamObserver<SpendResponse> responseObserver) {
+//        Timestamp timestamp = request.getSpendDate();
+//        Date spendDateFromRequest = new Date(timestamp.getSeconds() * 1000L);
+//
+//        Optional<SpendEntity> spendById = spendRepository.findById(UUID.fromString(request.getId()));
+//        if (spendById.isEmpty()) {
+//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Can`t find spend by given id: " + request.getId());
+//        } else {
+//            final String category = request.getCategory();
+//            CategoryEntity categoryEntity = categoryRepository.findAllByUsername(request.getUsername())
+//                    .stream()
+//                    .filter(c -> c.getCategory().equals(category))
+//                    .findFirst()
+//                    .orElseThrow(() -> new ResponseStatusException(
+//                            HttpStatus.BAD_REQUEST, "Can`t find category by given name: " + category));
+//
+//            SpendEntity spendEntity = spendById.get();
+//            spendEntity.setSpendDate(spendDateFromRequest);
+//            spendEntity.setCategory(categoryEntity);
+//            spendEntity.setAmount(request.getAmount());
+//            spendEntity.setDescription(request.getDescription());
+//            spendRepository.save(spendEntity);
+//
+//            SpendResponse response = SpendResponse.newBuilder()
+//                    .setId(spendEntity.getId().toString())
+//                    .setSpendDate(timestamp)
+//                    .setCategory(request.getCategory())
+//                    .setCurrency(request.getCurrency())
+//                    .setAmount(spendEntity.getAmount())
+//                    .setDescription(spendEntity.getDescription())
+//                    .setUsername(spendEntity.getUsername())
+//                    .build();
+//
+//            responseObserver.onNext(response);
+//            responseObserver.onCompleted();
+//
+//        }
+//    }
 
     public @Nonnull
     SpendJson saveSpendForUser(@Nonnull SpendJson spend) {

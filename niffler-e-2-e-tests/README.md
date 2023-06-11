@@ -46,3 +46,13 @@ Homework #12
 * Покрыть юнит-тестами все методы в классе GrpcCurrencyService <br>
 [GrpcCurrencyServiceTest.java](..%2Fniffler-currency%2Fsrc%2Ftest%2Fjava%2Fguru%2Fqa%2Fniffler%2Fservice%2FGrpcCurrencyServiceTest.java)
 
+Homework #13 <br>
+./gradlew :niffler-grpc-common:build
+* Реализовать полное покрытие gRPC тестами сервиса niffler-currency <br>
+--  gRPC тесты currency и spend (из задания со звездочкой) [GrpcTests.java](src%2Ftest%2Fjava%2Fguru%2Fqa%2Fniffler%2Ftest%2Fgrpc%2FGrpcTests.java)
+* Реализовать gRPC транспорт для какого-либо другого сервиса niffler - например, userdata или spend.
+  При этом сохранив РЕСТ-контроллеры для обратной совместимости. <br>
+[niffler-spend.proto](..%2Fniffler-grpc-common%2Fsrc%2Fmain%2Fproto%2Fniffler-spend.proto)
+[GrpcSpendService.java](..%2Fniffler-spend%2Fsrc%2Fmain%2Fjava%2Fniffler%2Fservice%2FGrpcSpendService.java)
+[SpendServiceGrpc.java](..%2Fniffler-grpc-common%2Fbuild%2Fgenerated%2Fsource%2Fproto%2Fmain%2Fgrpc%2Fguru%2Fqa%2Fgrpc%2Fniffler%2Fgrpc%2FSpendServiceGrpc.java)
+
