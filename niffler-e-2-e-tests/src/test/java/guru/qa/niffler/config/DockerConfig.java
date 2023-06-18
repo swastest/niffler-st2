@@ -1,8 +1,17 @@
 package guru.qa.niffler.config;
 
+import com.codeborne.selenide.Configuration;
+
 public class DockerConfig implements Config {
 
     static final DockerConfig INSTANCE = new DockerConfig();
+
+    static {
+        Configuration.browser = "chrome";
+        Configuration.browserVersion = "110.0";
+        Configuration.browserSize = "1920x1000";
+        Configuration.remote = "http://selenoid:4444/wd/hub";
+    }
 
     private DockerConfig() {
     }

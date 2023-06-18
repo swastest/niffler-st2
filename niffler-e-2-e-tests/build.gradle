@@ -38,6 +38,7 @@ dependencies {
     testImplementation "com.squareup.retrofit2:retrofit:${retrofitVersion}"
     testImplementation "com.squareup.retrofit2:converter-jackson:${retrofitVersion}"
     testImplementation 'com.squareup.okhttp3:logging-interceptor:3.14.9'
+    testImplementation 'io.rest-assured:rest-assured:5.3.1'
     // DB
     testImplementation "org.springframework.security:spring-security-crypto:${springComponentsVersion}"
     testImplementation "org.springframework:spring-jdbc:${springComponentsVersion}"
@@ -74,6 +75,10 @@ dependencies {
     // SOAP
     testImplementation 'com.sun.xml.messaging.saaj:saaj-impl:3.0.1'
     implementation 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.0'
+    //Wiremock
+    testImplementation 'com.github.tomakehurst:wiremock-jre8:2.35.0'
+    testImplementation 'com.github.tomakehurst:wiremock-standalone:2.27.2'
+
 }
 
 test {

@@ -56,3 +56,5 @@ Homework #13 <br>
 [GrpcSpendService.java](..%2Fniffler-spend%2Fsrc%2Fmain%2Fjava%2Fniffler%2Fservice%2FGrpcSpendService.java)
 [SpendServiceGrpc.java](..%2Fniffler-grpc-common%2Fbuild%2Fgenerated%2Fsource%2Fproto%2Fmain%2Fgrpc%2Fguru%2Fqa%2Fgrpc%2Fniffler%2Fgrpc%2FSpendServiceGrpc.java)
 
+Homework #15 <br>
+* Для всех сервисов, использующих REST (кроме сервиса gateway), реализовать стабы (моки) их эндпоинтов [HwWireMockTest.java](src%2Ftest%2Fjava%2Fguru%2Fqa%2Fniffler%2Ftest%2FwithWireMockTests%2FHwWireMockTest.java)

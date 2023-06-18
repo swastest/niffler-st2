@@ -33,8 +33,6 @@ class GrpcCurrencyServiceTest {
     GrpcCurrencyService grpcCurrencyService;
     List<CurrencyEntity> testCurrencyList;
 
-
-
     @BeforeEach
     void setUp(@Mock CurrencyRepository currencyRepository) {
         CurrencyEntity currencyEntityRub = new CurrencyEntity();

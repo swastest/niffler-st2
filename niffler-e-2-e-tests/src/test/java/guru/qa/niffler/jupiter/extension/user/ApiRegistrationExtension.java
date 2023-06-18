@@ -10,11 +10,9 @@ import guru.qa.niffler.dbHelper.dao.UsersDaoSpringJdbcImpl;
 import guru.qa.niffler.dbHelper.entity.authEntity.UserEntity;
 import guru.qa.niffler.jupiter.annotation.ApiRegistration;
 import guru.qa.niffler.model.UserJson;
-import org.junit.jupiter.api.extension.AfterTestExecutionCallback;
-import org.junit.jupiter.api.extension.BeforeEachCallback;
-import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.jupiter.api.extension.*;
 
-public class ApiRegistrationExtension implements BeforeEachCallback, AfterTestExecutionCallback {
+public class ApiRegistrationExtension implements BeforeEachCallback, AfterTestExecutionCallback, ParameterResolver {
 
    public static ExtensionContext.Namespace API_REGISTRATION = ExtensionContext.Namespace.create(ApiRegistrationExtension.class);
     private final AuthRestClient authRestClient = new AuthRestClient();
@@ -28,6 +26,7 @@ public class ApiRegistrationExtension implements BeforeEachCallback, AfterTestEx
         ApiRegistration annotation = context.getRequiredTestMethod().getAnnotation(ApiRegistration.class);
         if(annotation!=null){
             userJson =  doRegistration(annotation.login(), annotation.password(), annotation.submitPassword());
+            userJson.setPassword(annotation.submitPassword());
             context.getStore(API_REGISTRATION).put(getTestId(context), userJson);
         }
     }
@@ -60,4 +59,14 @@ public class ApiRegistrationExtension implements BeforeEachCallback, AfterTestEx
 
     }
 
+    @Override
+    public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
+        return parameterContext.getParameter().getType().isAssignableFrom(UserJson.class);
+    }
+
+    @Override
+    public UserJson resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
+        UserJson userJson = extensionContext.getStore(API_REGISTRATION).get(getTestId(extensionContext), UserJson.class);
+        return userJson;
+    }
 }
