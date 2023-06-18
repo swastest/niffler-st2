@@ -1,9 +1,7 @@
 package guru.qa.niffler.test.grpc;
 
 import com.google.protobuf.Empty;
-import guru.qa.grpc.niffler.grpc.NifflerCurrencyProto;
 import guru.qa.grpc.niffler.grpc.NifflerCurrencyServiceGrpc;
-import guru.qa.grpc.niffler.grpc.NifflerSpendProto;
 import guru.qa.grpc.niffler.grpc.SpendServiceGrpc;
 import guru.qa.niffler.config.Config;
 import guru.qa.niffler.jupiter.annotation.GrpcTest;
@@ -21,7 +19,7 @@ abstract class BaseGrpcTest {
 
     static {
         channelCurrency = ManagedChannelBuilder
-                .forAddress(config.getCurrencyGrpcUrl(), config.getCurrencyGrpcPort())
+                .forAddress(config.getCurrencyGrpcAddress(), config.getCurrencyGrpcPort())
                 .intercept(new AllureGrpc())
                 .usePlaintext() // без шифрования
                 .build();

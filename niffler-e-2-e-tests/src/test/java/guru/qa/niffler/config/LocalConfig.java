@@ -1,6 +1,11 @@
 package guru.qa.niffler.config;
 
 public class LocalConfig implements Config{
+    static final LocalConfig INSTANCE = new LocalConfig();
+
+    private LocalConfig() {
+    }
+
     @Override
     public String getDbHost() {
         return "localhost";
@@ -41,7 +46,7 @@ public class LocalConfig implements Config{
     }
 
     @Override
-    public String getCurrencyGrpcUrl() {
+    public String getCurrencyGrpcAddress() {
         return "localhost";
     }
 
