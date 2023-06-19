@@ -3,8 +3,7 @@ package guru.qa.niffler.jupiter.annotation;
 
 import guru.qa.niffler.jupiter.extension.ApiLoginExtension;
 import guru.qa.niffler.jupiter.extension.BrowserExtension;
-import guru.qa.niffler.jupiter.extension.GenerateSpendExtension;
-import guru.qa.niffler.jupiter.extension.GenerateUserInAuthDataBaseExtension;
+import guru.qa.niffler.jupiter.extension.GenerateUserExtension;
 import io.qameta.allure.junit5.AllureJunit5;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -15,7 +14,7 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@ExtendWith({AllureJunit5.class, BrowserExtension.class, GenerateUserInAuthDataBaseExtension.class, GenerateSpendExtension.class, ApiLoginExtension.class})
+@ExtendWith({AllureJunit5.class, BrowserExtension.class, GenerateUserExtension.class, ApiLoginExtension.class})
 public @interface WebTest {
 
 }

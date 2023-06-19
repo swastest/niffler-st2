@@ -1,8 +1,5 @@
 package guru.qa.niffler.jupiter.annotation;
 
-
-import guru.qa.niffler.model.CurrencyValues;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -10,13 +7,15 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface GenerateSpend {
+public @interface GenerateUser {
 
-    String description();
+    Friend[] friends() default {};
 
-    String category() default "";
+    Friend[] outcomeInvitations() default {};
 
-    double amount();
+    Friend[] incomeInvitations() default {};
 
-    CurrencyValues currency();
+    Category[] categories() default {};
+
+    GenerateSpend[] spends() default {};
 }

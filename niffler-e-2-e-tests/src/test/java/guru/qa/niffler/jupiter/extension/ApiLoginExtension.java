@@ -3,29 +3,54 @@ package guru.qa.niffler.jupiter.extension;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.WebDriverRunner;
 import guru.qa.niffler.api.AuthClient;
-import guru.qa.niffler.api.RetrofitAuthClient;
+import guru.qa.niffler.api.AuthRestClient;
 import guru.qa.niffler.api.context.CookieContext;
 import guru.qa.niffler.api.context.SessionContext;
 import guru.qa.niffler.api.util.OauthUtils;
 import guru.qa.niffler.config.Config;
 import guru.qa.niffler.jupiter.annotation.ApiLogin;
+import guru.qa.niffler.model.UserJson;
+import io.qameta.allure.AllureId;
 import org.junit.jupiter.api.extension.AfterTestExecutionCallback;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.openqa.selenium.Cookie;
 
+import java.util.Objects;
+
+import static org.apache.commons.lang3.ArrayUtils.isEmpty;
+
 public class ApiLoginExtension implements BeforeEachCallback, AfterTestExecutionCallback {
 
     protected static final Config CFG = Config.getConfig();
 
-    private final AuthClient authClient = new RetrofitAuthClient();
+    private static final GenerateUserService generateUserService = new GenerateUserService();
+
+    private static final AuthClient authClient = new AuthRestClient();
     private static final String JSESSIONID = "JSESSIONID";
 
     @Override
     public void beforeEach(ExtensionContext context) {
         ApiLogin apiLogin = context.getRequiredTestMethod().getAnnotation(ApiLogin.class);
         if (apiLogin != null) {
-            doLogin(apiLogin.username(), apiLogin.password());
+            String username;
+            String password;
+
+            if ("".equals(apiLogin.username()) || "".equals(apiLogin.password())) {
+                if (isEmpty(apiLogin.user())) {
+                    throw new IllegalStateException();
+                } else {
+                    UserJson generatedUser = generateUserService.generateUser(apiLogin.user()[0]);
+                    username = generatedUser.getUsername();
+                    password = generatedUser.getPassword();
+                    context.getStore(GenerateUserExtension.NAMESPACE).put(getTestId(context), generatedUser);
+                }
+            } else {
+                username = apiLogin.username();
+                password = apiLogin.password();
+            }
+
+            doLogin(username, password);
         }
     }
 
@@ -58,5 +83,11 @@ public class ApiLoginExtension implements BeforeEachCallback, AfterTestExecution
         Selenide.sessionStorage().setItem("codeVerifier", sessionContext.getCodeVerifier());
         Cookie jssesionIdCookie = new Cookie(JSESSIONID, cookieContext.getCookie(JSESSIONID));
         WebDriverRunner.getWebDriver().manage().addCookie(jssesionIdCookie);
+    }
+
+    private String getTestId(ExtensionContext context) {
+        return Objects
+                .requireNonNull(context.getRequiredTestMethod().getAnnotation(AllureId.class))
+                .value();
     }
 }

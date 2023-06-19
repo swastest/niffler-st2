@@ -5,14 +5,16 @@ import guru.qa.niffler.api.context.SessionContext;
 import guru.qa.niffler.api.interceptor.AddCookiesInterceptor;
 import guru.qa.niffler.api.interceptor.RecievedCodeInterceptor;
 import guru.qa.niffler.api.interceptor.RecievedCookiesInterceptor;
+import org.junit.jupiter.api.Assertions;
+import retrofit2.Response;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
-public class RetrofitAuthClient extends BaseRestClient implements AuthClient {
+public class AuthRestClient extends BaseRestClient implements AuthClient {
 
-    public RetrofitAuthClient() {
+    public AuthRestClient() {
         super(
                 CFG.getAuthUrl(),
                 true,
@@ -70,6 +72,23 @@ public class RetrofitAuthClient extends BaseRestClient implements AuthClient {
                     sessionContext.getCode(),
                     sessionContext.getCodeVerifier()
             ).execute().body().get("id_token").asText();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void register(String username, String password) {
+        CookieContext cookieContext = CookieContext.getInstance();
+        try {
+            authService.requestRegisterForm().execute();
+            Response<Void> response = authService.register(
+                            cookieContext.getFormattedCookie("XSRF-TOKEN"),
+                            cookieContext.getCookie("XSRF-TOKEN"),
+                            username,
+                            password,
+                            password)
+                    .execute();
+            Assertions.assertEquals(201, response.code());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
