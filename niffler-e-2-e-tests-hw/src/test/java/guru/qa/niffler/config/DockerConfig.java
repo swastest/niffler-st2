@@ -8,18 +8,22 @@ public class DockerConfig implements Config {
 
     static {
         Configuration.browser = "chrome";
-        Configuration.browserVersion = "100.0";
+        Configuration.browserVersion = "110.0";
+        Configuration.browserSize = "1920x1000";
         Configuration.remote = "http://selenoid:4444/wd/hub";
-        Configuration.browserSize = "1920x1080";
-        Configuration.timeout = 10000;
     }
 
     private DockerConfig() {
     }
 
     @Override
-    public String getDBHost() {
+    public String getDbHost() {
         return "niffler-all-db";
+    }
+
+    @Override
+    public int getDbPort() {
+        return 5432;
     }
 
     @Override
@@ -33,47 +37,32 @@ public class DockerConfig implements Config {
     }
 
     @Override
-    public int getDBPort() {
-        return 5432;
+    public String getSpendUrl() {
+        return "http://niffler-spend:8093";
     }
 
     @Override
     public String getFrontUrl() {
-        return "http://frontend.niffler.dc";
+        return "http://niffler-frontend:3000";
     }
 
     @Override
     public String getAuthUrl() {
-        return "http://auth.niffler.dc:9000";
+        return "http://niffler-auth:9000";
     }
 
     @Override
-    public String getGatewayUrl() {
-        return "http://gateway.niffler.dc:8090";
-    }
-
-    @Override
-    public String getUserdataUrl() {
-        return "http://userdata.niffler.dc:8089";
-    }
-
-    @Override
-    public String getSpendUrl() {
-        return "http://spend.niffler.dc:8093";
+    public String getUserDataUrl() {
+        return "http://niffler-userdata:8089";
     }
 
     @Override
     public String getCurrencyGrpcAddress() {
-        return "currency.niffler.dc";
+        return "http://niffler-currency:8091";
     }
 
     @Override
     public int getCurrencyGrpcPort() {
         return 8092;
-    }
-
-    @Override
-    public String kafkaAddress() {
-        return "kafka:9092";
     }
 }
