@@ -29,9 +29,9 @@ services:
     container_name: auth.niffler.dc
     image: dtuchs/niffler-auth:latest
     ports:
-      - "9000:9000"
+      - "9001:9001"
     healthcheck:
-      test: "wget --spider http://localhost:9000/actuator/health || exit 1"
+      test: "wget --spider http://localhost:9001/actuator/health || exit 1"
       interval: 5s
       timeout: 5s
       retries: 10
@@ -79,14 +79,18 @@ services:
       - test-network
     dns_search: .
 
+  #ИМАДЖ ВАЕРМОК ДЛЯ РЕСТА
   userdata.niffler.dc:
     container_name: userdata.niffler.dc
-    image: dtuchs/niffler-userdata:latest
-    expose:
-      - "8089"
-    depends_on:
-      niffler-all-db:
-        condition: service_healthy
+    image: wiremock/wiremock:2.35.0
+    ports:
+      - "8089:8089"
+      - "9000:9000"
+    #      по дефолту мок работает через порт 8080, ниже переопределяем
+    command: ["--port", "8089"]
+    #    указываем в каком пакете внутри докера будет храниться наш маппинг
+    volumes:
+      - ./wiremock:/home/wiremock
     networks:
       - test-network
     dns_search: .

@@ -38,6 +38,9 @@ dependencies {
     testImplementation "com.squareup.retrofit2:retrofit:${retrofitVersion}"
     testImplementation "com.squareup.retrofit2:converter-jackson:${retrofitVersion}"
     testImplementation 'com.squareup.okhttp3:logging-interceptor:3.14.9'
+    testImplementation 'io.rest-assured:rest-assured:5.3.0'
+
+
     // DB
     testImplementation "org.springframework.security:spring-security-crypto:${springComponentsVersion}"
     testImplementation "org.springframework:spring-jdbc:${springComponentsVersion}"

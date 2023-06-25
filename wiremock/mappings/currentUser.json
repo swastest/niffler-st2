@@ -1,0 +1,13 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/currentUser?username=kzk"
+  },
+  "response": {
+    "status": 200,
+    "body": "{\n    \"id\": \"6d283c63-aab9-4d09-91bc-53717a4a3ad5\",\n    \"username\": \"PRIVET\",\n    \"firstname\": null,\n    \"surname\": null,\n    \"currency\": \"KZT\",\n    \"photo\": null\n}",
+    "headers": {
+      "Content-Type": "text/plain"
+    }
+  }
+}
