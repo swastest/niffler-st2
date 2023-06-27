@@ -16,7 +16,7 @@ public class GatewayGraphQLRestClient extends BaseRestClient {
 
     public @Nonnull JsonNode getAllCurrencies(JsonNode request) {
         try {
-            return gatewayService.getAllCurrencies(
+            return gatewayService.graphql(
                     "Bearer " + SessionContext.getInstance().getToken(),
                     request
             ).execute().body();

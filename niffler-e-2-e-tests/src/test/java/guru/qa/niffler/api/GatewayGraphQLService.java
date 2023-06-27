@@ -9,25 +9,7 @@ import retrofit2.http.POST;
 public interface GatewayGraphQLService {
 
     @POST("/graphql")
-    Call<AllCurrenciesGqlResponse> getAllCurrencies(
-            @Header("Authorization") String bearerToken,
-            @Body JsonNode body
-    );
-
-    @POST("/graphql")
-    Call<AllCategoriesGqlResponse> getAllCategories(
-            @Header("Authorization") String bearerToken,
-            @Body JsonNode body
-    );
-
-    @POST("/graphql")
-    Call<JsonNode> getAllCurrencies(
-            @Header("Authorization") String bearerToken,
-            @Body JsonNode body
-    );
-
-    @POST("/graphql")
-    Call<JsonNode> getAllCurrencies(
+    Call<JsonNode> graphql(
             @Header("Authorization") String bearerToken,
             @Body JsonNode body
     );
