@@ -78,7 +78,7 @@ public class ThredLocalEntityManagerFactory implements EntityManagerFactory {
 
     @Override
     public void addNamedQuery(String name, Query query) {
-       delegate.addNamedQuery(name, query);
+        delegate.addNamedQuery(name, query);
     }
 
     @Override
@@ -88,6 +88,6 @@ public class ThredLocalEntityManagerFactory implements EntityManagerFactory {
 
     @Override
     public <T> void addNamedEntityGraph(String graphName, EntityGraph<T> entityGraph) {
-delegate.addNamedEntityGraph(graphName, entityGraph);
+        delegate.addNamedEntityGraph(graphName, entityGraph);
     }
 }
