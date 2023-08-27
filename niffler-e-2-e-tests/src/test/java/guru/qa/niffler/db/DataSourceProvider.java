@@ -16,7 +16,7 @@ public enum DataSourceProvider {
     public DataSource getDataSource(ServiceDB service) {
         return dataSources.computeIfAbsent(service, key -> {
             PGSimpleDataSource sds = new PGSimpleDataSource();
-            sds.setURL(service.getJdbcUrl());
+            sds.setURL(key.getJdbcUrl());
             sds.setUser(Config.getConfig().getDBLogin());
             sds.setPassword(Config.getConfig().getDBPassword());
             return new P6DataSource(sds);
