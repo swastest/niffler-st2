@@ -14,9 +14,9 @@ public enum DataSourceProvider {
     private final Map<ServiceDB, DataSource> dataSources = new ConcurrentHashMap<>();
 
     public DataSource getDataSource(ServiceDB service) {
-        return dataSources.computeIfAbsent(service, serviceDB -> {
+        return dataSources.computeIfAbsent(service, key -> {
             PGSimpleDataSource sds = new PGSimpleDataSource();
-            sds.setURL(serviceDB.getJdbcUrl());
+            sds.setURL(service.getJdbcUrl());
             sds.setUser(Config.getConfig().getDBLogin());
             sds.setPassword(Config.getConfig().getDBPassword());
             return new P6DataSource(sds);
