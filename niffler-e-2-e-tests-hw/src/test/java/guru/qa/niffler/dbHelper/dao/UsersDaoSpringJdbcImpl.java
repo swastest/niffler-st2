@@ -5,6 +5,8 @@ import guru.qa.niffler.dbHelper.entity.authEntity.AuthorityEntity;
 import guru.qa.niffler.dbHelper.entity.authEntity.UserEntity;
 import guru.qa.niffler.dbHelper.managerDb.DataSourceProviderPG;
 import guru.qa.niffler.dbHelper.managerDb.ServiceDB;
+import guru.qa.niffler.dbHelper.mapper.UserEntityRowMapper;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -13,6 +15,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +33,9 @@ public class UsersDaoSpringJdbcImpl implements UsersDao {
     }
 
     @Override
+    @SuppressWarnings("uncheked")
     public int createUser(UserEntity user) {
-        transactionTemplate.execute(status -> {
+        return transactionTemplate.execute(status -> {
             KeyHolder keyHolder = new GeneratedKeyHolder();
             jdbcTemplate.update(connection -> {
                 PreparedStatement statement = connection.prepareStatement("INSERT INTO users (username, password, enabled, " +
@@ -51,13 +55,25 @@ public class UsersDaoSpringJdbcImpl implements UsersDao {
                 throw new IllegalStateException("Unable to retrieve generated id");
             }
             user.setId(userId);
+            jdbcTemplate.batchUpdate("INSERT INTO authorities (user_id, authority) VALUES (?, ?)",
+                    new BatchPreparedStatementSetter() {
+                        @Override
+                        public void setValues(PreparedStatement ps, int i) throws SQLException {
+                            ps.setObject(1, userId);
+                            ps.setObject(2, Authority.values()[i].name());
+                        }
 
-            user.getAuthorities().stream().forEach(a ->
+                        @Override
+                        public int getBatchSize() {
+                            return Authority.values().length;
+                        }
+                    });
+/*          можно и так, но правильнее через батч
+            user.getAuthorities().stream().forEach(a ->    // Это как альтернатива
                     jdbcTemplate.update("INSERT INTO authorities (user_id, authority) VALUES (?, ?)",
-                            user.getId(), a.getAuthority().name()));
+                            user.getId(), a.getAuthority().name()));*/
             return 1;
         });
-        return 1;
     }
 
     @Override
@@ -96,7 +112,10 @@ public class UsersDaoSpringJdbcImpl implements UsersDao {
     public UserEntity userInfo(String userName) {
         UserEntity user = new UserEntity();
         jdbcTemplate.query("SELECT * FROM users WHERE username = ?;",
-                rs -> {
+                UserEntityRowMapper.instance
+             /*
+              или можно без использования маппера вот так:
+              rs -> {
                     user.setId((UUID) rs.getObject("id"));
                     user.setUsername(rs.getString("username"));
                     user.setPassword(rs.getString("password"));
@@ -104,7 +123,7 @@ public class UsersDaoSpringJdbcImpl implements UsersDao {
                     user.setAccountNonExpired(rs.getBoolean("account_non_expired"));
                     user.setAccountNonLocked(rs.getBoolean("account_non_locked"));
                     user.setCredentialsNonExpired(rs.getBoolean("credentials_non_expired"));
-                }, userName);
+                }*/, userName);
 
         List<AuthorityEntity> authorityEntities = jdbcTemplate.query("SELECT * FROM authorities WHERE user_id= ?;",
                 rs -> {

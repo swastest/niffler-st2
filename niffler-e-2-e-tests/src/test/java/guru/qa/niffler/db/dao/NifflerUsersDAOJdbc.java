@@ -27,7 +27,7 @@ public class NifflerUsersDAOJdbc implements NifflerUsersDAO {
 
             try (PreparedStatement insertUserSt = conn.prepareStatement("INSERT INTO users "
                     + "(username, password, enabled, account_non_expired, account_non_locked, credentials_non_expired) "
-                    + " VALUES (?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+                    + " VALUES (?, ?, ?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
                  PreparedStatement insertAuthoritySt = conn.prepareStatement(
                          "INSERT INTO authorities (user_id, authority) VALUES (?, ?)")) {
                 insertUserSt.setString(1, user.getUsername());
