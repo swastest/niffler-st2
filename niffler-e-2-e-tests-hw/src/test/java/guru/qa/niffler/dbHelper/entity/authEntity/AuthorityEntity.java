@@ -4,6 +4,25 @@ import jakarta.persistence.*;
 
 import java.util.Objects;
 import java.util.UUID;
+/*
+как сгенерировать через идею(платную) - актуально только при использовании JPA:
+1. создать и прописать все настройки  в persistence.xml  (resources/META-INF/persistence.xml)
+2. View -> ToolWindows-> Persistence (открывается подОкошко с нашими модулями)
+3. Кликнуть по нужному модулю, где хотим создать ентити и выбрать в открывшемся меню
+Generate Persistence Mapping -> By Database Schema (открылось окно Import Database Schema)
+4. Работа с окном:
+- В поле Choice Data Source выбрать нужный датасорс
+- Entity Suffix = Entity
+- выбираем наши таблицы и поля для генерации
+- проверяем галочку (чтобы стояла) Generate JPA Annotation
+- поставить галочку по желанию Generate Column Properties
+- нажать на плюсик, над таблицей с таблицами из бд - открывается подокно
+        -*** в Подокне Add Relationship устанавливаем связи
+        (указываем поле в главной таблице и в таргет таблице, поле фореген кии)
+5. Не забыть установить название пакета еще
+
+Но конечно генерится это все не идеально и нужно править руками - лучше знать этот материал и самой составлять ))))
+ */
 
 @Entity
 @Table(name = "authorities")

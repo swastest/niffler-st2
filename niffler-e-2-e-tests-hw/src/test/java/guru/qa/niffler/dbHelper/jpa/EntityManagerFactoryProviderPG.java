@@ -13,15 +13,16 @@ public enum EntityManagerFactoryProviderPG {
     private Map<ServiceDB, EntityManagerFactory> emfStore = new ConcurrentHashMap<>();
 
     public EntityManagerFactory getEmf(ServiceDB serviceDB) {
-        return emfStore.computeIfAbsent(serviceDB, service -> {
+        return emfStore.computeIfAbsent(serviceDB, key -> {
             Map<String, Object> properties = new HashMap<>();
             properties.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
             properties.put("hibernate.connection.driver_class", "org.postgresql.Driver");
             properties.put("hibernate.connection.username", "postgres");
             properties.put("hibernate.connection.password", "secret");
-            properties.put("hibernate.connection.url", service.getJdbcUrl());
+            properties.put("hibernate.connection.url", key.getJdbcUrl());
 
             return new ThredLocalEntityManagerFactory(Persistence.createEntityManagerFactory(
+                    //тут внимательно!! стрингой передаем нейм из persistence.xml (persistence-unit name="niffler-persistence-unit-name")
                     "niffler-persistence-unit-name", properties));
         });
     }

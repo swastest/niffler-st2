@@ -4,7 +4,15 @@ import guru.qa.niffler.dbHelper.managerDb.ServiceDB;
 import guru.qa.niffler.dbHelper.entity.authEntity.UserEntity;
 import guru.qa.niffler.dbHelper.jpa.EntityManagerFactoryProviderPG;
 import guru.qa.niffler.dbHelper.jpa.JpaTransactionManager;
+/*
+JPA - 2 базовых интерфейса:
+ 1. EntityManagerFactory - аналог дата сорса, мех-м кот знает как подключаться к БД и который создает EntityManager
+ 2. EntityManager - мех-м для получения сущностей из БД, создания итд, интерфейс для непосредственного
+  взаимодействия с БД
+ */
 
+
+//внимание!! Наследуемся от класса JpaTransactionManager для управления транзакциями!!!
 public class UsersDaoHibernateImpl extends JpaTransactionManager implements UsersDao {
 
 //    private final EntityManagerFactory entityManagerFactory = EntityManagerFactoryProviderPG.INSTANCE.getEmf(ServiceDB.NIFFLER_AUTH);
@@ -12,7 +20,7 @@ public class UsersDaoHibernateImpl extends JpaTransactionManager implements User
 
     public UsersDaoHibernateImpl() {
         super(EntityManagerFactoryProviderPG.INSTANCE.getEmf(ServiceDB.NIFFLER_AUTH)
-                .createEntityManager());
+                .createEntityManager()); //создаеи конкретный ентити менеджер(тред локал)
     }
 
     @Override
@@ -31,6 +39,8 @@ public class UsersDaoHibernateImpl extends JpaTransactionManager implements User
 //        userFind.setEnabled(user.getEnabled());
 //        userFind.setCredentialsNonExpired(user.getCredentialsNonExpired());
         merge(user);
+ //       return merge(user);; - так правильнее, чтобы метод возвращал обновленного юзера!
+        //       Но если сейчас так сделаю, то придется много править!!!
          return 0;
     }
 

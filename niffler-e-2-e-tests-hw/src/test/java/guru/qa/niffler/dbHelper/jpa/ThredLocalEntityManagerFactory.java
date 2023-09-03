@@ -6,10 +6,13 @@ import jakarta.persistence.metamodel.Metamodel;
 
 import java.util.Map;
 
-//декоратор
+//декоратор - обычно нужен для того, чтобы расширить функционал базовых методов того объекта, который заворачиваем
+// другие потоки не смогут обращаться к такому объекту, другие потоки будут создавать и класть для себя свое
 public class ThredLocalEntityManagerFactory implements EntityManagerFactory {
 
     private final EntityManagerFactory delegate;
+
+    //привязываем объект EntityManager к потоку, который его создал и положил
     private final ThreadLocal<EntityManager> threadLocalEm;
 
     public ThredLocalEntityManagerFactory(EntityManagerFactory delegate) {

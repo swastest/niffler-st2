@@ -13,6 +13,14 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+/*
+JDBC - 4 интерфейса (DataSource, Connection, PreparedStatement, ResulSet
+
+DAO -  шаблон проектирования, цель которого абстрагировать доступ к данным от специфичных деталей источника данных.
+Это позволяет разработчикам работать с данными, используя более абстрактные методы и объекты, что делает код более
+универсальным и менее зависимым от конкретной реализации источника данных.
+ */
+
 public class UsersDaoCleanJdbcImpl implements UsersDao {
     private static final DataSource dataSource = DataSourceProviderPG.INSTANCE.getDataSource(ServiceDB.NIFFLER_AUTH);
 

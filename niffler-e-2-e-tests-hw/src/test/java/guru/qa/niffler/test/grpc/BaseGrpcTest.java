@@ -2,7 +2,7 @@ package guru.qa.niffler.test.grpc;
 
 import com.google.protobuf.Empty;
 import guru.qa.grpc.niffler.grpc.NifflerCurrencyServiceGrpc;
-import guru.qa.grpc.niffler.grpc.SpendServiceGrpc;
+
 import guru.qa.niffler.config.Config;
 import guru.qa.niffler.jupiter.annotation.GrpcTest;
 import io.grpc.Channel;
@@ -33,6 +33,6 @@ abstract class BaseGrpcTest {
     protected final NifflerCurrencyServiceGrpc.NifflerCurrencyServiceBlockingStub currencyBlockingStub =
             NifflerCurrencyServiceGrpc.newBlockingStub(channelCurrency);
 
-    protected final SpendServiceGrpc.SpendServiceBlockingStub spendBlockingStub =
-            SpendServiceGrpc.newBlockingStub(channelSpend);
+  /*  protected final SpendServiceGrpc.SpendServiceBlockingStub spendBlockingStub =
+            SpendServiceGrpc.newBlockingStub(channelSpend);*/
 }

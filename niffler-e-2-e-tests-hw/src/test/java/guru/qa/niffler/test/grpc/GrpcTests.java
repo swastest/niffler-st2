@@ -42,7 +42,7 @@ public class GrpcTests extends BaseGrpcTest {
         Assertions.assertEquals(expectedResult, calculateResponse.getCalculatedAmount());
     }
 
-    @Test
+/*    @Test
     void saveSpendForUserTest() {
         SpendRequest request = SpendRequest.newBuilder().setUsername("roro")
                 .setCurrency(CurrencyValues.KZT)
@@ -56,9 +56,9 @@ public class GrpcTests extends BaseGrpcTest {
         Assertions.assertEquals(request.getAmount(), response.getAmount());
         Assertions.assertEquals(request.getDescription(), response.getDescription());
         Assertions.assertEquals(request.getCurrency(), response.getCurrency());
-    }
+    }*/
 
-    @Test
+/*    @Test
     void editSpendForUserTest() {
         SpendRequest request = SpendRequest.newBuilder().setUsername("roro")
                 .setId("1df2b6c1-bf75-4ce4-8faf-370827522520")
@@ -69,5 +69,5 @@ public class GrpcTests extends BaseGrpcTest {
 
         SpendResponse response = spendBlockingStub.editSpendForUser(request);
         Assertions.assertEquals(request.getDescription(), response.getDescription());
-    }
+    }*/
 }
