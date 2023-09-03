@@ -1,6 +1,7 @@
 package guru.qa.niffler.api;
 
 import guru.qa.niffler.config.Config;
+import io.qameta.allure.okhttp3.AllureOkHttp3;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -34,7 +35,8 @@ public abstract class BaseRestClient {
             }
         }
 
-        builder.addNetworkInterceptor(new HttpLoggingInterceptor().setLevel(BODY));
+        builder.addNetworkInterceptor(new HttpLoggingInterceptor().setLevel(BODY))
+                .addNetworkInterceptor(new AllureOkHttp3());
         this.httpClient = builder.build();
 
         this.retrofit = new Retrofit.Builder()
