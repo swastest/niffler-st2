@@ -21,7 +21,7 @@ abstract class BaseGrpcTest {
         channelCurrency = ManagedChannelBuilder
                 .forAddress(config.getCurrencyGrpcAddress(), config.getCurrencyGrpcPort())
                 .intercept(new AllureGrpc())
-                .usePlaintext() // без шифрования
+                .usePlaintext() // без шифрования без SSL TLC
                 .build();
         channelSpend = ManagedChannelBuilder
                 .forAddress("localhost", 9090)
